@@ -1,0 +1,27 @@
+{
+  "name": "docusurus-lunr-search",
+  "version": "0.0.1",
+  "description": "Lunr search component for Docusaurus",
+  "main": "src/index.js",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "autocomplete.js": "^0.37.0",
+    "cheerio": "^1.0.0-rc.3",
+    "classnames": "^2.2.6",
+    "docsearch.js": "^2.6.3",
+    "fs-extra": "^8.1.0",
+    "hogan.js": "^3.0.2"
+  },
+  "peerDependencies": {
+    "@docusaurus/core": "^2.0.0",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4"
+  },
+  "engines": {
+    "node": ">= 8.10.0"
+  }
+}
