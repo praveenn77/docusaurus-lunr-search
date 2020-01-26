@@ -1,12 +1,21 @@
 {
   "name": "docusurus-lunr-search",
-  "version": "0.0.2",
-  "description": "Lunr search component for Docusaurus",
+  "version": "0.0.3",
+  "description": "Offline search component for Docusaurus V2",
   "main": "src/index.js",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
+  "homepage": "https://github.com/lelouch77/docusurus-lunr-search/blob/master/README.md",
+  "repository": {
+    "url": "https://github.com/lelouch77/docusurus-lunr-search/"
+  },
+  "author": {
+    "name": "Praveen N",
+    "url": "https://github.com/lelouch77"
+  },
+  
   "keywords":["docusurus","lunr","offline-search","documentation"],
   "license": "MIT",
   "dependencies": {
