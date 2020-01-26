@@ -1,5 +1,5 @@
 # docusurus-lunr-search
-Offline Search for Docusurus
+Offline Search for Docusurus V2
 
 ## How to Use ?
 1. Install this package
