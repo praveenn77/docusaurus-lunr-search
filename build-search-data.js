@@ -3,7 +3,7 @@ const path = require("path");
 const cheerio = require("cheerio");
 
 const BUILD_PATH = "./build/";
-const SEARCH_DATA_LOCATION = "./src/theme/LunrSearchBar/search-data.js";
+const SEARCH_DATA_LOCATION = "./src/theme/SearchBar/search-data.js";
 
 const SEARCH_DATA = [];
 const sectionHeaderElements = ["h2", "h3"];
