@@ -1,6 +1,6 @@
 {
   "name": "docusurus-lunr-search",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "Offline search component for Docusaurus V2",
   "main": "src/index.js",
   "publishConfig": {
@@ -15,8 +15,18 @@
     "name": "Praveen N",
     "url": "https://github.com/lelouch77"
   },
-  
-  "keywords":["docusurus","lunr","offline-search","documentation"],
+  "contributors": [
+    {
+      "name": "Pieter C",
+      "url": "https://github.com/pcallewaert"
+    }
+  ],
+  "keywords": [
+    "docusurus",
+    "lunr",
+    "offline-search",
+    "documentation"
+  ],
   "license": "MIT",
   "dependencies": {
     "autocomplete.js": "^0.37.0",
