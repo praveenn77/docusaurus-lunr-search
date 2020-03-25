@@ -75,13 +75,19 @@ const buildSearchData = filePath => {
     return acc;
   }, []);
 
+  keywords = $("meta[name='keywords']").attr("content");
+  if ( typeof keywords !== 'undefined' && keywords ) {
+    keywords = keywords.replace(",", " ")
+  }
+
   SEARCH_DATA.push({
     title: pageTitle,
     type: 0,
     sectionRef: "#",
     url: baseUrl,
     // If there is no sections then push the complete content under page title
-    content: sectionHeaders.length === 0 ? getContent(markdown) : ""
+    content: sectionHeaders.length === 0 ? getContent(markdown) : "",
+    keywords: keywords
   });
 
   sectionHeaders.forEach(sectionHeader => {

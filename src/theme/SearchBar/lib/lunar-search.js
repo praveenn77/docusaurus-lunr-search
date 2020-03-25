@@ -14,12 +14,14 @@ class LunrSearchAdapter {
             this.ref("id");
             this.field("title", { boost: 200 });
             this.field("content", { boost: 2 });
+            this.field("keywords", { boost: 100 });
             this.metadataWhitelist = ["position"];
             searchData.forEach((d, i) => {
                 const doc = {
                     id: i,
                     title: d.title,
-                    content: d.content
+                    content: d.content,
+                    keywords: d.keywords
                 };
                 this.add(doc);
             });
@@ -72,6 +74,15 @@ class LunrSearchAdapter {
         let formattedTitle = doc.title.substring(0, start) + '<span class="algolia-docsearch-suggestion--highlight">' + doc.title.substring(start, end) + '</span>' + doc.title.substring(end, doc.title.length);
         return this.getHit(doc, formattedTitle)
     }
+
+    getKeywordHit(doc, position, length) {
+        console.log(position)
+        const start = position[0];
+        const end = position[0] + length;
+        let formattedTitle = doc.title + '<br /><i>Keywords: ' + doc.keywords.substring(0, start) + '<span class="algolia-docsearch-suggestion--highlight">' + doc.keywords.substring(start, end) + '</span>' + doc.keywords.substring(end, doc.keywords.length) + '</i>'
+        return this.getHit(doc, formattedTitle)
+    }
+
     getContentHit(doc, position) {
         const start = position[0];
         const end = position[0] + position[1];
@@ -141,6 +152,10 @@ class LunrSearchAdapter {
                     } else if (metadata[i].content) {
                         const position = metadata[i].content.position[0]
                         hits.push(this.getContentHit(doc, position))
+                    } else if (metadata[i].keywords) {
+                        const position = metadata[i].keywords.position[0]
+                        hits.push(this.getKeywordHit(doc, position, input.length));
+                        this.titleHitsRes.push(result.ref);
                     }
                 }
             });
