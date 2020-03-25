@@ -76,7 +76,6 @@ class LunrSearchAdapter {
     }
 
     getKeywordHit(doc, position, length) {
-        console.log(position)
         const start = position[0];
         const end = position[0] + length;
         let formattedTitle = doc.title + '<br /><i>Keywords: ' + doc.keywords.substring(0, start) + '<span class="algolia-docsearch-suggestion--highlight">' + doc.keywords.substring(start, end) + '</span>' + doc.keywords.substring(end, doc.keywords.length) + '</i>'
