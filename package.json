@@ -32,7 +32,6 @@
     "autocomplete.js": "^0.37.0",
     "cheerio": "^1.0.0-rc.3",
     "classnames": "^2.2.6",
-    "fs-extra": "^8.1.0",
     "hogan.js": "^3.0.2",
     "lunr": "^2.3.8"
   },

@@ -10,23 +10,25 @@ npm i docusurus-lunr-search --save
 ```
 npm run swizzle docusurus-lunr-search SearchBar
 ```
-3. Copy the [`build-search-data.js`](./build-search-data.js) to the root folder of your project
+3. Add the docusurus-lunr-search plugin to your `docusaurus.config.js`
+```
+module.exports = {
+  // ...
+  plugins: [
+    'docusurus-lunr-search'
+  ]
+}
+```
 4. Then build your Docusurus project
 ```
 npm run build
 ```
-5. Create the search data using by running `build-search-data.js`
+5. Serve your application
 ```
-node build-search-data.js
+npx http-server ./build
 ```
-6. You are done!.
-\
- Now you can build your project again with new `search-data.js`
-```
-npm run build
-//or 
-npm start
-```
+
+Note: Docusaurus search information can only be generated from a production build. Local development is currently not supported.
 ## Sample
 <p align="center">
   <img width="460" height="300" src="https://raw.githubusercontent.com/lelouch77/docusurus-lunr-search/master/assets/search-offline.png">

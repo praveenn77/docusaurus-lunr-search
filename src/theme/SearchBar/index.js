@@ -39,13 +39,18 @@ const Search = props => {
     }
   };
 
+  const getSearchData = () =>
+    process.env.NODE_ENV === "production"
+      ? fetch(`${baseUrl}search-data.json`).then((content) => content.json())
+      : Promise.resolve([]);
+
   const loadAlgolia = () => {
     if (!loaded) {
       Promise.all([
-        import("./search-data"),
+        getSearchData(),
         import("./lib/DocSearch"),
         import("./algolia.css")
-      ]).then(([{ default: searchData }, { default: DocSearch }]) => {
+      ]).then(([searchData, { default: DocSearch }]) => {
         loaded = true;
         window.searchData = searchData;
         window.DocSearch = DocSearch;
