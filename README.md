@@ -1,5 +1,10 @@
 # docusurus-lunr-search
-Offline Search for Docusurus V2
+Offline Search for Docusurus V2 
+Demo - https://lelouch77.github.io/docusurus-lunr-search-demo/
+## Sample
+<p align="center">
+  <img width="460" height="300" src="https://raw.githubusercontent.com/lelouch77/docusurus-lunr-search/master/assets/search-offline.png">
+</p>
 
 ## How to Use ?
 1. Install this package
@@ -29,9 +34,5 @@ npx http-server ./build
 ```
 
 Note: Docusaurus search information can only be generated from a production build. Local development is currently not supported.
-## Sample
-<p align="center">
-  <img width="460" height="300" src="https://raw.githubusercontent.com/lelouch77/docusurus-lunr-search/master/assets/search-offline.png">
-</p>
 
 Thanks to [`algolia/docsearch.js`](https://github.com/algolia/docsearch), I modified it to create this search component 
