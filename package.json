@@ -1,6 +1,6 @@
 {
   "name": "docusurus-lunr-search",
-  "version": "0.0.6",
+  "version": "0.0.7-rc1",
   "description": "Offline search component for Docusaurus V2",
   "main": "src/index.js",
   "publishConfig": {
@@ -19,6 +19,10 @@
     {
       "name": "Pieter C",
       "url": "https://github.com/pcallewaert"
+    },
+    {
+      "name": "ZachJW34",
+      "url": "https://github.com/ZachJW34"
     }
   ],
   "keywords": [
