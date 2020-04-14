@@ -1,30 +1,33 @@
-# docusurus-lunr-search
+# docusaurus-lunr-search
 Offline Search for Docusurus V2 
-Demo - https://lelouch77.github.io/docusurus-lunr-search-demo/
+[Demo Website](https://lelouch77.github.io/docusurus-lunr-search-demo)
+
 ## Sample
 <p align="center">
-  <img width="460" height="300" src="https://raw.githubusercontent.com/lelouch77/docusurus-lunr-search/master/assets/search-offline.png">
+  <img width="460" height="300" src="https://raw.githubusercontent.com/lelouch77/docusaurus-lunr-search/master/assets/search-offline.png">
 </p>
 
 ## How to Use ?
 1. Install this package
 ```
-npm i docusurus-lunr-search --save
+npm i docusaurus-lunr-search  --save
+//OR
+npm i docusurus-lunr-search --save // Depreciated
 ```
-2. Then run docusurus swizzle
+2. Then run docusaurus swizzle
 ```
-npm run swizzle docusurus-lunr-search SearchBar
+npm run swizzle docusaurus-lunr-search SearchBar
 ```
-3. Add the docusurus-lunr-search plugin to your `docusaurus.config.js`
+3. Add the docusaurus-lunr-search plugin to your `docusaurus.config.js`
 ```
 module.exports = {
   // ...
   plugins: [
-    'docusurus-lunr-search'
+    'docusaurus-lunr-search'
   ]
 }
 ```
-4. Then build your Docusurus project
+4. Then build your Docusaurus project
 ```
 npm run build
 ```
