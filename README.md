@@ -1,6 +1,6 @@
 # docusaurus-lunr-search
 Offline Search for Docusaurus V2 
-[Demo Website](https://lelouch77.github.io/docusurus-lunr-search-demo)
+[Demo Website](https://lelouch77.github.io/docusaurus-lunr-search-demo/)
 
 ## Sample
 <p align="center">
