@@ -1,5 +1,5 @@
 {
-  "name": "docusurus-lunr-search",
+  "name": "docusaurus-lunr-search",
   "version": "1.0.0",
   "description": "Offline search component for Docusaurus V2",
   "main": "src/index.js",
