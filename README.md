@@ -1,5 +1,5 @@
 # docusaurus-lunr-search
-Offline Search for Docusurus V2 
+Offline Search for Docusaurus V2 
 [Demo Website](https://lelouch77.github.io/docusurus-lunr-search-demo)
 
 ## Sample
