@@ -7,9 +7,9 @@
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
-  "homepage": "https://github.com/lelouch77/docusurus-lunr-search/blob/master/README.md",
+  "homepage": "https://github.com/lelouch77/docusaurus-lunr-search/blob/master/README.md",
   "repository": {
-    "url": "https://github.com/lelouch77/docusurus-lunr-search/"
+    "url": "https://github.com/lelouch77/docusaurus-lunr-search/"
   },
   "author": {
     "name": "Praveen N",
@@ -26,7 +26,7 @@
     }
   ],
   "keywords": [
-    "docusurus",
+    "docusaurus",
     "lunr",
     "offline-search",
     "documentation"
