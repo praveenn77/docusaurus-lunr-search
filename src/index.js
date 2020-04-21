@@ -57,6 +57,8 @@ module.exports = function () {
 function buildSearchData(files) {
   const searchData = [];
   files.forEach(({ path, url }) => {
+    if(!fs.existsSync(path)) return;
+    
     const htmlFile = fs.readFileSync(path);
     //   const dom = new JSDOM(htmlFile);
     const $ = cheerio.load(htmlFile);
