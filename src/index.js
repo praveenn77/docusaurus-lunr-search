@@ -99,7 +99,7 @@ function buildSearchData(files) {
 
     sectionHeaders.forEach((sectionHeader) => {
       sectionHeader = $(sectionHeader);
-      const title = sectionHeader.text().slice(1);
+      const title = sectionHeader.text().replace("#","");
       const sectionRef = sectionHeader.children().first().attr("id");
       const content = getSectionContent(sectionHeader);
       searchData.push({
