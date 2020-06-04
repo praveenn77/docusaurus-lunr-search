@@ -20,11 +20,10 @@ npm run swizzle docusaurus-lunr-search SearchBar
 ```
 3. Add the docusaurus-lunr-search plugin to your `docusaurus.config.js`
 ```
+const path = require('path');
 module.exports = {
   // ...
-  plugins: [
-    'docusaurus-lunr-search'
-  ]
+    plugins: [path.resolve(__dirname, './node_modules/docusaurus-lunr-search/')],
 }
 ```
 4. Then build your Docusaurus project
