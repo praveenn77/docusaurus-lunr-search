@@ -9,17 +9,16 @@ import React, { useRef, useCallback } from "react";
 import classnames from "classnames";
 import { useHistory } from "@docusaurus/router";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-let loaded = false;
 const Search = props => {
   const initialized = useRef(false);
   const searchBarRef = useRef(null);
   const history = useHistory();
   const { siteConfig = {} } = useDocusaurusContext();
   const { baseUrl } = siteConfig;
-  const initAlgolia = () => {
-    if (!initialized.current) {
-      new window.DocSearch({
-        searchData: window.searchData,
+  const initAlgolia = (searchDocs, searchIndex, DocSearch) => {
+      new DocSearch({
+        searchDocs,
+        searchIndex,
         inputSelector: "#search_input_react",
         // Override algolia's default selection event, allowing us to do client-side
         // navigation and avoiding a full page refresh.
@@ -35,29 +34,29 @@ const Search = props => {
           history.push(url);
         }
       });
-      initialized.current = true;
-    }
   };
 
-  const getSearchData = () =>
+  const getSearchDoc = () =>
     process.env.NODE_ENV === "production"
-      ? fetch(`${baseUrl}search-data.json`).then((content) => content.json())
+      ? fetch(`${baseUrl}search-doc.json`).then((content) => content.json())
+      : Promise.resolve([]);
+
+  const getLunrIndex = () =>
+    process.env.NODE_ENV === "production"
+      ? fetch(`${baseUrl}lunr-index.json`).then((content) => content.json())
       : Promise.resolve([]);
 
   const loadAlgolia = () => {
-    if (!loaded) {
+    if (!initialized.current) {
       Promise.all([
-        getSearchData(),
+        getSearchDoc(),
+        getLunrIndex(),
         import("./lib/DocSearch"),
         import("./algolia.css")
-      ]).then(([searchData, { default: DocSearch }]) => {
-        loaded = true;
-        window.searchData = searchData;
-        window.DocSearch = DocSearch;
-        initAlgolia();
+      ]).then(([searchDocs, searchIndex, { default: DocSearch }]) => {
+        initAlgolia(searchDocs, searchIndex, DocSearch);
       });
-    } else {
-      initAlgolia();
+      initialized.current = true;
     }
   };
 

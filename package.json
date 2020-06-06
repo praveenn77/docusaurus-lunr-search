@@ -1,6 +1,6 @@
 {
   "name": "docusaurus-lunr-search",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "Offline search component for Docusaurus V2",
   "main": "src/index.js",
   "publishConfig": {
@@ -37,7 +37,8 @@
     "cheerio": "^1.0.0-rc.3",
     "classnames": "^2.2.6",
     "hogan.js": "^3.0.2",
-    "lunr": "^2.3.8"
+    "lunr": "^2.3.8",
+    "lunr-languages": "^1.4.0"
   },
   "peerDependencies": {
     "@docusaurus/core": "^2.0.0",

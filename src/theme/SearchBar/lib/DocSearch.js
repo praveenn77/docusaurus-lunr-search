@@ -3,27 +3,22 @@ import LunrSearchAdapter from "./lunar-search";
 import autocomplete from "autocomplete.js";
 import templates from "./templates";
 import utils from "./utils";
-import $ from "./zepto";
+import $ from "autocomplete.js/zepto";
 
 /**
  * Adds an autocomplete dropdown to an input field
  * @function DocSearch
- * @param  {Object} options.searchData         Read-only API key
+ * @param  {Object} options.searchDocs Search Documents
+ * @param  {Object} options.searchIndex Lune searchIndexes
  * @param  {string} options.inputSelector  CSS selector that targets the input
  * value.
  * @param  {Object} [options.autocompleteOptions] Options to pass to the underlying autocomplete instance
  * @return {Object}
  */
-const usage = `Usage:
-  documentationSearch({
-  searchData,
-  inputSelector,
-  [ appId ],
-  [ autocompleteOptions.{hint,debug} ]
-})`;
 class DocSearch {
     constructor({
-        searchData,
+        searchDocs,
+        searchIndex,
         inputSelector,
         debug = false,
         queryDataCallback = null,
@@ -38,11 +33,6 @@ class DocSearch {
         enhancedSearchInput = false,
         layout = "collumns"
     }) {
-        DocSearch.checkArguments({
-            searchData,
-            inputSelector,
-        });
-        this.searchData = searchData;
         this.input = DocSearch.getInputFromSelector(inputSelector);
         this.queryDataCallback = queryDataCallback || null;
         const autocompleteOptionsDebug =
@@ -65,7 +55,7 @@ class DocSearch {
 
         this.isSimpleLayout = layout === "simple";
 
-        this.client = new LunrSearchAdapter(this.searchData);
+        this.client = new LunrSearchAdapter(searchDocs, searchIndex);
 
         if (enhancedSearchInput) {
             this.input = DocSearch.injectSearchBox(this.input);
@@ -103,30 +93,6 @@ class DocSearch {
 
         if (enhancedSearchInput) {
             DocSearch.bindSearchBoxEvent();
-        }
-    }
-
-    /**
-     * Checks that the passed arguments are valid. Will throw errors otherwise
-     * @function checkArguments
-     * @param  {object} args Arguments as an option object
-     * @returns {void}
-     */
-    static checkArguments(args) {
-        if (!args.searchData) {
-            throw new Error(usage);
-        }
-
-        if (typeof args.inputSelector !== "string") {
-            throw new Error(
-                `Error: inputSelector:${args.inputSelector}  must be a string. Each selector must match only one element and separated by ','`
-            );
-        }
-
-        if (!DocSearch.getInputFromSelector(args.inputSelector)) {
-            throw new Error(
-                `Error: No input element in the page matches ${args.inputSelector}`
-            );
         }
     }
 

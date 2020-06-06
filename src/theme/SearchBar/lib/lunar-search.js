@@ -1,31 +1,10 @@
-import lunr from "lunr";
+import lunr from "docusaurus-lunr-search/src/lunr.client";
 lunr.tokenizer.separator = /[\s\-/]+/;
 
 class LunrSearchAdapter {
-    constructor(searchData) {
-        this.searchData = searchData;
-        this.init();
-        this.titleHitsRes = []
-    }
-
-    init() {
-        const { searchData } = this;
-        this.lunrIndex = lunr(function () {
-            this.ref("id");
-            this.field("title", { boost: 200 });
-            this.field("content", { boost: 2 });
-            this.field("keywords", { boost: 100 });
-            this.metadataWhitelist = ["position"];
-            searchData.forEach((d, i) => {
-                const doc = {
-                    id: i,
-                    title: d.title,
-                    content: d.content,
-                    keywords: d.keywords
-                };
-                this.add(doc);
-            });
-        });
+    constructor(searchDocs, searchIndex) {
+        this.searchDocs = searchDocs;
+        this.lunrIndex = lunr.Index.load(searchIndex);
     }
 
     getLunrResult(input) {
@@ -139,7 +118,7 @@ class LunrSearchAdapter {
             this.titleHitsRes = []
             this.contentHitsRes = []
             results.forEach(result => {
-                const doc = this.searchData[result.ref];
+                const doc = this.searchDocs[result.ref];
                 const { metadata } = result.matchData;
                 for (let i in metadata) {
                     if (metadata[i].title) {

@@ -1,19 +1,16 @@
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
 const fs = require("fs");
 const path = require("path");
 const cheerio = require("cheerio");
+const lunr = require('lunr');
+const utils = require('./utils');
 
 const sectionHeaderElements = ["h2", "h3"];
 
-module.exports = function () {
+module.exports = function (context, options) {
+  options = options || {};
+  const languages = utils.generateLunrClientJS(options.languages);
   return {
-    name: "docusurus-lunr-search",
+    name: "docusaurus-lunr-search",
     getThemePath() {
       return path.resolve(__dirname, "./theme");
     },
@@ -37,30 +34,48 @@ module.exports = function () {
       };
     },
     async postBuild({ routesPaths = [], outDir, baseUrl }) {
-      const files = routesPaths
-        .filter((route) => route !== baseUrl && route !== `${baseUrl}404.html`)
-        .map((route) => route.substr(baseUrl.length))
-        .map((route) => ({
-          path: path.join(outDir, route, "index.html"),
-          url: route,
-        }));
-      const searchData = buildSearchData(files);
+      console.log("docusaurus-lunr-search:: Building search docs and lunr index file")
+      const files = utils.getFilePaths(routesPaths, outDir, baseUrl);
+      const searchDocuments = [];
+      const lunrIndex = lunr(function () {
+        languages && this.use(languages);
+        this.ref("id");
+        this.field("title", { boost: 200 });
+        this.field("content", { boost: 2 });
+        this.field("keywords", { boost: 100 });
+        this.metadataWhitelist = ["position"];
+        addToSearchData = (d) => {
+          this.add({
+            id: searchDocuments.length,
+            title: d.title,
+            content: d.content,
+            keywords: d.keywords
+          });
+          searchDocuments.push(d);
+        }
+        buildSearchData(files, addToSearchData);
+      });
+      console.log("docusaurus-lunr-search:: writing search-doc.json")
       fs.writeFileSync(
-        path.join(outDir, "search-data.json"),
-        JSON.stringify(searchData)
+        path.join(outDir, "search-doc.json"),
+        JSON.stringify(searchDocuments)
       );
+      console.log("docusaurus-lunr-search:: writing lunr-index.json")
+      fs.writeFileSync(
+        path.join(outDir, "lunr-index.json"),
+        JSON.stringify(lunrIndex)
+      );
+      console.log("docusaurus-lunr-search:: End of process")
     },
   };
 };
 
 // Build search data for a html
-function buildSearchData(files) {
-  const searchData = [];
+function buildSearchData(files, addToSearchData) {
   files.forEach(({ path, url }) => {
-    if(!fs.existsSync(path)) return;
-    
+    if (!fs.existsSync(path)) return;
+
     const htmlFile = fs.readFileSync(path);
-    //   const dom = new JSDOM(htmlFile);
     const $ = cheerio.load(htmlFile);
 
     const article = $("article");
@@ -87,7 +102,7 @@ function buildSearchData(files) {
       keywords = keywords.replace(",", " ");
     }
 
-    searchData.push({
+    addToSearchData({
       title: pageTitle,
       type: 0,
       sectionRef: "#",
@@ -95,14 +110,14 @@ function buildSearchData(files) {
       // If there is no sections then push the complete content under page title
       content: sectionHeaders.length === 0 ? getContent(markdown) : "",
       keywords: keywords,
-    });
+    })
 
     sectionHeaders.forEach((sectionHeader) => {
       sectionHeader = $(sectionHeader);
-      const title = sectionHeader.text().replace("#","");
+      const title = sectionHeader.text().replace("#", "");
       const sectionRef = sectionHeader.children().first().attr("id");
       const content = getSectionContent(sectionHeader);
-      searchData.push({
+      addToSearchData({
         title,
         type: 1,
         pageTitle,
@@ -111,7 +126,6 @@ function buildSearchData(files) {
       });
     });
   });
-  return searchData;
 }
 
 function getContent(element) {
