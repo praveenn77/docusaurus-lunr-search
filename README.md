@@ -37,4 +37,17 @@ npx http-server ./build
 
 Note: Docusaurus search information can only be generated from a production build. Local development is currently not supported.
 
+## Language options
+```
+const path = require('path');
+module.exports = {
+  // ...
+    plugins: [[ path.resolve(__dirname, './node_modules/docusaurus-lunr-search/'), {
+      languages:['en', 'de'] // language codes
+    }],
+}
+```
+Supports all the language listed here https://github.com/MihaiValentin/lunr-languages
+
+
 Thanks to [`algolia/docsearch.js`](https://github.com/algolia/docsearch), I modified it to create this search component 
