@@ -11,8 +11,7 @@ Offline Search for Docusaurus V2
 1. Install this package
 ```
 npm i docusaurus-lunr-search  --save
-//OR
-npm i docusurus-lunr-search --save // Depreciated
+
 ```
 2. Then run docusaurus swizzle
 ```
