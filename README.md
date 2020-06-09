@@ -1,6 +1,11 @@
 # docusaurus-lunr-search
-Offline Search for Docusaurus V2 
+Offline Search for Docusaurus V2
+
 [Demo Website](https://lelouch77.github.io/docusaurus-lunr-search-demo/)
+
+ [![MIT Licence](https://img.shields.io/github/license/lelouch77/docusaurus-lunr-search)](#)
+
+[![npm version](https://badge.fury.io/js/docusaurus-lunr-search.svg)](https://www.npmjs.com/package/docusaurus-lunr-search)
 
 ## Sample
 <p align="center">
