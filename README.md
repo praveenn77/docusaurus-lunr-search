@@ -55,3 +55,5 @@ Supports all the language listed here https://github.com/MihaiValentin/lunr-lang
 
 
 Thanks to [`algolia/docsearch.js`](https://github.com/algolia/docsearch), I modified it to create this search component 
+
+And Big thanks [cmfcmf](https://github.com/cmfcmf), I used the code from his library for multi-language support.
