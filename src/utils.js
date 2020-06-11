@@ -1,6 +1,11 @@
 const path = require('path');
 const fs = require('fs');
 const lunr = require('lunr');
+
+/**
+ * Based on code from https://github.com/cmfcmf/docusaurus-search-local/
+ * by Christian Flach, licensed under the MIT license.
+ */
 function generateLunrClientJS(language = "en") {
     if (Array.isArray(language) && language.length === 1) {
         language = language[0];
