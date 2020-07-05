@@ -6,7 +6,7 @@ const lunr = require('lunr');
  * Based on code from https://github.com/cmfcmf/docusaurus-search-local/
  * by Christian Flach, licensed under the MIT license.
  */
-function generateLunrClientJS(language = "en") {
+function generateLunrClientJS(outDir, language = "en") {
     if (Array.isArray(language) && language.length === 1) {
         language = language[0];
     }
@@ -34,7 +34,7 @@ function generateLunrClientJS(language = "en") {
     }
     lunrClient += `export default lunr;\n`;
 
-    const lunrClientPath = path.join(__dirname, "lunr.client.js");
+    const lunrClientPath = path.join(outDir, "lunr.client.js");
     fs.writeFileSync(lunrClientPath, lunrClient);
 
     if (language !== "en") {

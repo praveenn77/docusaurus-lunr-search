@@ -23,6 +23,10 @@
     {
       "name": "ZachJW34",
       "url": "https://github.com/ZachJW34"
+    },
+    {
+      "name": "Andrei Rublev",
+      "url": "https://github.com/anru"
     }
   ],
   "keywords": [
@@ -34,11 +38,18 @@
   "license": "MIT",
   "dependencies": {
     "autocomplete.js": "^0.37.0",
-    "cheerio": "^1.0.0-rc.3",
     "classnames": "^2.2.6",
+    "gauge": "^3.0.0",
+    "hast-util-select": "^4.0.0",
+    "hast-util-to-text": "^2.0.0",
     "hogan.js": "^3.0.2",
     "lunr": "^2.3.8",
-    "lunr-languages": "^1.4.0"
+    "lunr-languages": "^1.4.0",
+    "object-assign": "^4.1.1",
+    "rehype-parse": "^7.0.1",
+    "to-vfile": "^6.1.0",
+    "unified": "^9.0.0",
+    "unist-util-is": "^4.0.2"
   },
   "peerDependencies": {
     "@docusaurus/core": "^2.0.0",
