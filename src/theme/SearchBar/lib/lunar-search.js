@@ -1,4 +1,4 @@
-import lunr from "docusaurus-lunr-search/src/lunr.client";
+import lunr from "@generated/lunr.client";
 lunr.tokenizer.separator = /[\s\-/]+/;
 
 class LunrSearchAdapter {
