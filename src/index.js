@@ -94,7 +94,7 @@ function buildSearchData(files, addToSearchData) {
     return Promise.resolve()
   }
   let activeWorkersCount = 0
-  const workerCount = Math.max(4, os.cpus().length * 2)
+  const workerCount = Math.max(2, os.cpus().length)
   
   console.log(`docusaurus-lunr-search:: Start scanning documents in ${Math.min(workerCount, files.length)} threads`)
   const gauge = new Guage()
