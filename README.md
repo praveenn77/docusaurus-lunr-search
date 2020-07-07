@@ -29,10 +29,9 @@ npm run swizzle docusaurus-lunr-search SearchBar
 ```
 3. Add the docusaurus-lunr-search plugin to your `docusaurus.config.js`
 ```
-const path = require('path');
 module.exports = {
   // ...
-    plugins: [path.resolve(__dirname, './node_modules/docusaurus-lunr-search/')],
+    plugins: [require.resolve('docusaurus-lunr-search')],
 }
 ```
 4. Then build your Docusaurus project
@@ -48,16 +47,31 @@ Note: Docusaurus search information can only be generated from a production buil
 
 ## Language options
 ```
-const path = require('path');
 module.exports = {
   // ...
-    plugins: [[ path.resolve(__dirname, './node_modules/docusaurus-lunr-search/'), {
-      languages:['en', 'de'] // language codes
+    plugins: [[ require.resolve('docusaurus-lunr-search'), {
+      languages: ['en', 'de'] // language codes
     }],
 }
 ```
 Supports all the language listed here https://github.com/MihaiValentin/lunr-languages
 
+## Other options
+
+### excludeRoutes
+
+You can exclude certain routes from the search by using this option:
+
+```
+module.exports = {
+  // ...
+    plugins: [[ require.resolve('docusaurus-lunr-search'), {
+      excludeRoutes: [
+        'docs/changelogs/**/*', // exclude changelogs from indexing
+      ]
+    }],
+}
+```
 
 Thanks to [`algolia/docsearch.js`](https://github.com/algolia/docsearch), I modified it to create this search component 
 

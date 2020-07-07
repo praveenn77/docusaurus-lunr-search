@@ -37,11 +37,14 @@ module.exports = function (context, options) {
         },
       };
     },
-    async postBuild({ routesPaths = [], outDir, baseUrl, generatedFilesDir }) {
+    async postBuild({ routesPaths = [], outDir, baseUrl }) {
       console.log('docusaurus-lunr-search:: Building search docs and lunr index file')
       console.time('docusaurus-lunr-search:: Indexing time')
 
-      const files = utils.getFilePaths(routesPaths, outDir, baseUrl)
+      const [files, meta] = utils.getFilePaths(routesPaths, outDir, baseUrl, options)
+      if (meta.excludedCount) {
+        console.log(`docusaurus-lunr-search:: ${meta.excludedCount} documents were excluded from the search by excludeRoutes config`)
+      }
       const searchDocuments = []
       const lunrBuilder = lunr(function (builder) {
         if (languages) {
@@ -70,9 +73,10 @@ module.exports = function (context, options) {
         searchDocuments.push(d);
       }
 
-      await buildSearchData(files, addToSearchData)
+      const indexedDocuments = await buildSearchData(files, addToSearchData)
       const lunrIndex = lunrBuilder.build()
       console.timeEnd('docusaurus-lunr-search:: Indexing time')
+      console.log(`docusaurus-lunr-search:: indexed ${indexedDocuments} documents out of ${files.length}`)
       
       console.log('docusaurus-lunr-search:: writing search-doc.json')
       fs.writeFileSync(
@@ -99,20 +103,21 @@ function buildSearchData(files, addToSearchData) {
   console.log(`docusaurus-lunr-search:: Start scanning documents in ${Math.min(workerCount, files.length)} threads`)
   const gauge = new Guage()
   gauge.show('scanning documents...')
+  let indexedDocuments = 0 // Documents that have added at least one value to the index
 
   return new Promise((resolve, reject) => {
-    let activeIndex = 0
+    let nextIndex = 0
 
-    const handleMessage = (maybeDoc, worker) => {
+    const handleMessage = ([isDoc, payload], worker) => {
       gauge.pulse()
-      if (maybeDoc) {
-        addToSearchData(maybeDoc)
+      if (isDoc) {
+        addToSearchData(payload)
       } else {
-        gauge.show(`scanned ${activeIndex} files out of ${files.length}`, activeIndex / files.length)
+        indexedDocuments += payload
+        gauge.show(`scanned ${nextIndex} files out of ${files.length}`, nextIndex / files.length)
 
-        if (activeIndex < files.length) {
-          worker.postMessage(files[activeIndex])
-          activeIndex += 1
+        if (nextIndex < files.length) {
+          worker.postMessage(files[nextIndex++])
         } else {
           worker.postMessage(null)
         }
@@ -120,10 +125,13 @@ function buildSearchData(files, addToSearchData) {
     }
   
     for (let i = 0; i < workerCount; i++) {
+      if (nextIndex >= files.length) {
+        break
+      }
       const worker = new Worker(path.join(__dirname, 'html-to-doc.js'))
       worker.on('error', reject)
-      worker.on('message', (doc) => {
-        handleMessage(doc, worker)
+      worker.on('message', (message) => {
+        handleMessage(message, worker)
       })
       worker.on('exit', code => {
         if (code !== 0) {
@@ -134,18 +142,14 @@ function buildSearchData(files, addToSearchData) {
           if (activeWorkersCount <= 0) {
             // No active workers left, we are done
             gauge.hide()
-            resolve()
+            resolve(indexedDocuments)
           }
         }
       })
-  
-      if (activeIndex < files.length) {
-        activeWorkersCount++
-        worker.postMessage(files[activeIndex++])
-        gauge.pulse()
-      } else {
-        break
-      }
+
+      activeWorkersCount++
+      worker.postMessage(files[nextIndex++])
+      gauge.pulse()
     }
   })
 }

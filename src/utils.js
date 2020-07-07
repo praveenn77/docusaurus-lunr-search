@@ -1,6 +1,7 @@
-const path = require('path');
-const fs = require('fs');
-const lunr = require('lunr');
+const path = require('path')
+const fs = require('fs')
+const lunr = require('lunr')
+const minimatch = require('minimatch')
 
 /**
  * Based on code from https://github.com/cmfcmf/docusaurus-search-local/
@@ -47,20 +48,29 @@ function generateLunrClientJS(outDir, language = "en") {
     return null;
 }
 
-function getFilePaths(routesPaths, outDir, baseUrl) {
+function getFilePaths(routesPaths, outDir, baseUrl, options = {}) {
     const files = []
+    const { excludeRoutes = [] } = options
+    const meta = {
+        excludedCount: 0,
+    }
+
     routesPaths.forEach((route) => {
-        if (route === baseUrl || route === `${baseUrl}404.html`) return;
-        route = route.substr(baseUrl.length);
+        if (route === baseUrl || route === `${baseUrl}404.html`) return
+        route = route.substr(baseUrl.length)
+        if (excludeRoutes.some((excludePattern) => minimatch(route, excludePattern))) {
+            meta.excludedCount++
+            return
+        }
         files.push({
             path: path.join(outDir, route, "index.html"),
             url: route,
-        });
-    });
-    return files;
+        })
+    })
+    return [files, meta]
 }
 
 module.exports = {
     generateLunrClientJS,
-    getFilePaths
+    getFilePaths,
 }

@@ -110,10 +110,12 @@ function getSectionHeaders(markdown) {
 }
 
 function processFile(file) {
+  let scanned = 0
   for (const doc of scanDocuments(file)) {
-    parentPort.postMessage(doc)
+    scanned = 1
+    parentPort.postMessage([true, doc])
   }
-  parentPort.postMessage(null)
+  parentPort.postMessage([null, scanned])
 }
 
 parentPort.on('message', (maybeFile) => {
