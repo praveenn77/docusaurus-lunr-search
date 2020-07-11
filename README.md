@@ -21,7 +21,6 @@ For older version of node use `docusaurus-lunr-search` version `2.1.0`
 1. Install this package
 ```
 npm i docusaurus-lunr-search  --save
-
 ```
 2. Then run docusaurus swizzle
 ```
