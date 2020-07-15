@@ -9,10 +9,10 @@ const toText = require('hast-util-to-text')
 const is = require('unist-util-is')
 const toVfile = require('to-vfile')
 
-const sectionHeaderTypes = ['h2', 'h3']
+const sectionHeaderTest = ({ tagName }) => ['h2', 'h3'].includes(tagName)
 
 // Build search data for a html
-function * scanDocuments({ path, url }) {
+function* scanDocuments({ path, url }) {
   let vfile
   try {
     vfile = toVfile.readSync(path)
@@ -61,7 +61,7 @@ function * scanDocuments({ path, url }) {
     keywords,
   }
 
-  for (const sectonDesc of sectionHeaders) {
+  for (const sectionDesc of sectionHeaders) {
     const { title, content, ref } = sectionDesc;
     yield {
       title,
@@ -84,7 +84,7 @@ function getSectionHeaders(markdown) {
 
   const emitCurrent = () => {
     result.push({
-      title: toText(currentSection).replace(/^#+/, ''),
+      title: toText(currentSection).replace(/^#+/, '').replace(/#$/, ''),
       ref: select('.anchor', currentSection).properties.id,
       content: contentsAcc,
     })
@@ -93,7 +93,7 @@ function getSectionHeaders(markdown) {
   }
 
   for (const node of markdown.children) {
-    if (is(node, sectionHeaderTypes)) {
+    if (is(node, sectionHeaderTest)) {
       if (currentSection) {
         emitCurrent()
       }

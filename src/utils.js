@@ -50,22 +50,27 @@ function generateLunrClientJS(outDir, language = "en") {
 
 function getFilePaths(routesPaths, outDir, baseUrl, options = {}) {
     const files = []
-    const { excludeRoutes = [] } = options
+    const addedFiles = new Set();
+    const { excludeRoutes = [], indexBaseUrl = false } = options
     const meta = {
         excludedCount: 0,
     }
 
     routesPaths.forEach((route) => {
-        if (route === baseUrl || route === `${baseUrl}404.html`) return
+        if ((!indexBaseUrl && route === baseUrl) || route === `${baseUrl}404.html`) return
         route = route.substr(baseUrl.length)
+        const filePath = path.join(outDir, route, "index.html")
+        // In case docs only mode routesPaths has baseUrl twice
+        if(addedFiles.has(filePath)) return
         if (excludeRoutes.some((excludePattern) => minimatch(route, excludePattern))) {
             meta.excludedCount++
             return
         }
         files.push({
-            path: path.join(outDir, route, "index.html"),
+            path: filePath,
             url: route,
-        })
+        });
+        addedFiles.add(filePath);
     })
     return [files, meta]
 }
