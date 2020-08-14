@@ -12,6 +12,12 @@ Offline Search for Docusaurus V2
   <img width="460" height="300" src="https://raw.githubusercontent.com/lelouch77/docusaurus-lunr-search/master/assets/search-offline.png">
 </p>
 
+
+## Prerequisites
+`worker_thread` is needed, suggested node version > 12.X
+For older version of node use `docusaurus-lunr-search` version `2.1.0`
+(`npm i docusaurus-lunr-search@2.1.0`)
+
 ## How to Use ?
 1. Install this package
 ```
