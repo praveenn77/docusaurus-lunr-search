@@ -65,11 +65,13 @@ You can exclude certain routes from the search by using this option:
 ```
 module.exports = {
   // ...
-    plugins: [[ require.resolve('docusaurus-lunr-search'), {
-      excludeRoutes: [
-        'docs/changelogs/**/*', // exclude changelogs from indexing
-      ]
-    }],
+    plugins: [
+    [require.resolve('docusaurus-lunr-search'), {
+        excludeRoutes: [
+            'docs/changelogs/**/*', // exclude changelogs from indexing
+        ]
+    }]
+  ],
 }
 ```
 ### indexBaseUrl
