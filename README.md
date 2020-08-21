@@ -77,9 +77,13 @@ Base url will not indexed by default, if you want to index the base url set this
 ```
 module.exports = {
   // ...
-    plugins: [[ require.resolve('docusaurus-lunr-search'), {
-      indexBaseUrl: true
-    }],
+    plugins: [
+        [require.resolve('docusaurus-lunr-search'),
+            {
+                indexBaseUrl: true
+            }
+        ]
+    ],
 }
 ```
 Thanks to [`algolia/docsearch.js`](https://github.com/algolia/docsearch), I modified it to create this search component 
