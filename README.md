@@ -25,7 +25,7 @@ npm i docusaurus-lunr-search  --save
 ```
 2. Then run docusaurus swizzle
 ```
-npm run swizzle docusaurus-lunr-search SearchBar
+npm run swizzle docusaurus-lunr-search SearchBar -- --danger
 ```
 3. Add the docusaurus-lunr-search plugin to your `docusaurus.config.js`
 ```
