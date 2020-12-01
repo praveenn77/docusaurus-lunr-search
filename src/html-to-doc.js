@@ -81,11 +81,11 @@ function getSectionHeaders(markdown) {
   let currentSection = null
   const result = []
   let contentsAcc = ''
-
   const emitCurrent = () => {
+    const ref = select('.anchor', currentSection)
     result.push({
       title: toText(currentSection).replace(/^#+/, '').replace(/#$/, ''),
-      ref: select('.anchor', currentSection)?.properties.id,
+      ref: ref ? ref.properties.id : '#',
       content: contentsAcc,
     })
     contentsAcc = ''
