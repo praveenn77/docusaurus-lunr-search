@@ -23,22 +23,26 @@ For older version of node use `docusaurus-lunr-search` version `2.1.0`
 ```
 npm i docusaurus-lunr-search  --save
 ```
-2. Then run docusaurus swizzle
+2. Then run `npm install` to update, build, and link the packages
+```
+npm install
+```
+3. Then run docusaurus swizzle
 ```
 npm run swizzle docusaurus-lunr-search SearchBar -- --danger
 ```
-3. Add the docusaurus-lunr-search plugin to your `docusaurus.config.js`
+4. Add the docusaurus-lunr-search plugin to your `docusaurus.config.js`
 ```
 module.exports = {
   // ...
     plugins: [require.resolve('docusaurus-lunr-search')],
 }
 ```
-4. Then build your Docusaurus project
+5. Then build your Docusaurus project
 ```
 npm run build
 ```
-5. Serve your application
+6. Serve your application
 ```
 npx http-server ./build
 ```
