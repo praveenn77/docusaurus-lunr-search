@@ -1,6 +1,6 @@
 {
   "name": "docusaurus-lunr-search",
-  "version": "2.1.9",
+  "version": "2.1.10",
   "description": "Offline search component for Docusaurus V2",
   "main": "src/index.js",
   "publishConfig": {
@@ -59,7 +59,7 @@
     "mocha": "^8.0.1"
   },
   "peerDependencies": {
-    "@docusaurus/core": "^2.0.0",
+    "@docusaurus/core": "^2.0.0-alpha.60",
     "react": "^16.8.4",
     "react-dom": "^16.8.4"
   },
