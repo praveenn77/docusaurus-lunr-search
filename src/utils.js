@@ -23,6 +23,10 @@ function generateLunrClientJS(outDir, language = "en") {
             language
                 .filter(code => code !== "en")
                 .forEach(code => {
+                    if (code === 'ja' || code === 'jp') {
+                        require("lunr-languages/tinyseg")(lunr);
+                        lunrClient += 'require("lunr-languages/tinyseg")(lunr);\n';
+                    }
                     require(`lunr-languages/lunr.${code}`)(lunr);
                     lunrClient += `require("lunr-languages/lunr.${code}")(lunr);\n`;
                 });
