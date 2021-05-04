@@ -16,27 +16,6 @@ module.exports = function (context, options) {
     getThemePath() {
       return path.resolve(__dirname, './theme');
     },
-    configureWebpack(config) {
-      const generatedFilesDir = config.resolve.alias['@generated']
-      languages = utils.generateLunrClientJS(generatedFilesDir, options.languages);
-      // Ensure that algolia docsearch css is its own chunk
-      return {
-        optimization: {
-          splitChunks: {
-            cacheGroups: {
-              algolia: {
-                name: 'algolia',
-                test: /algolia\.css$/,
-                chunks: `all`,
-                enforce: true,
-                // Set priority higher than docusaurus single-css extraction
-                priority: 60,
-              },
-            },
-          },
-        },
-      };
-    },
     async postBuild({ routesPaths = [], outDir, baseUrl }) {
       console.log('docusaurus-lunr-search:: Building search docs and lunr index file')
       console.time('docusaurus-lunr-search:: Indexing time')
