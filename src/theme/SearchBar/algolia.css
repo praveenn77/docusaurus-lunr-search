@@ -531,3 +531,19 @@
   margin-left: auto;
   margin-right: 5px;
 }
+
+
+html[data-theme='dark'] .algolia-docsearch-suggestion--category-header,
+html[data-theme='dark'] .algolia-docsearch-suggestion--wrapper,
+html[data-theme='dark'] .algolia-docsearch-footer {
+    background: var(--ifm-background-color);
+    color: var(--ifm-font-color-base);
+}
+
+html[data-theme='dark'] .algolia-docsearch-suggestion--title {
+    color: var(--ifm-font-color-base);
+}
+
+html[data-theme='dark'] .ds-cursor .algolia-docsearch-suggestion--wrapper {
+    background: var(--ifm-background-surface-color);
+}
