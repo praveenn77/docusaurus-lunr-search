@@ -11,6 +11,13 @@ const utils = require('./utils')
 module.exports = function (context, options) {
   options = options || {};
   let languages
+
+  const guid = String(Date.now())
+  const fileNames = {
+    searchDoc: `search-doc-${guid}.json`,
+    lunrIndex: `lunr-index-${guid}.json`,
+  }
+
   return {
     name: 'docusaurus-lunr-search',
     getThemePath() {
@@ -36,6 +43,9 @@ module.exports = function (context, options) {
           },
         },
       };
+    },
+    async contentLoaded({actions}) {
+      actions.setGlobalData({"fileNames": fileNames})
     },
     async postBuild({ routesPaths = [], outDir, baseUrl }) {
       console.log('docusaurus-lunr-search:: Building search docs and lunr index file')
@@ -78,15 +88,30 @@ module.exports = function (context, options) {
       console.timeEnd('docusaurus-lunr-search:: Indexing time')
       console.log(`docusaurus-lunr-search:: indexed ${indexedDocuments} documents out of ${files.length}`)
       
+      const searchDocFileContents = JSON.stringify(searchDocuments)
       console.log('docusaurus-lunr-search:: writing search-doc.json')
+      // This file is written for backwards-compatibility with components swizzled from v2.1.12 or earlier.
       fs.writeFileSync(
         path.join(outDir, 'search-doc.json'),
-        JSON.stringify(searchDocuments)
+        searchDocFileContents
       )
+      console.log(`docusaurus-lunr-search:: writing ${fileNames.searchDoc}`)
+      fs.writeFileSync(
+        path.join(outDir, fileNames.searchDoc),
+        searchDocFileContents
+      )
+
+      const lunrIndexFileContents = JSON.stringify(lunrIndex);
       console.log('docusaurus-lunr-search:: writing lunr-index.json')
+      // This file is written for backwards-compatibility with components swizzled from v2.1.12 or earlier.
       fs.writeFileSync(
         path.join(outDir, 'lunr-index.json'),
-        JSON.stringify(lunrIndex)
+        lunrIndexFileContents
+      )
+      console.log(`docusaurus-lunr-search:: writing ${fileNames.lunrIndex}`)
+      fs.writeFileSync(
+        path.join(outDir, fileNames.lunrIndex),
+        lunrIndexFileContents
       )
       console.log('docusaurus-lunr-search:: End of process')
     },
