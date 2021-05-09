@@ -24,9 +24,9 @@ module.exports = function (context, options) {
       return path.resolve(__dirname, './theme');
     },
     configureWebpack(config) {
+      // Multilingual issue fix
       const generatedFilesDir = config.resolve.alias['@generated']
       languages = utils.generateLunrClientJS(generatedFilesDir, options.languages);
-      // Ensure that algolia docsearch css is its own chunk
       return {};
     },
     async contentLoaded({actions}) {
