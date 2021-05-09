@@ -56,6 +56,9 @@ const Search = props => {
         import("./lib/DocSearch"),
         import("./algolia.css")
       ]).then(([searchDocs, searchIndex, { default: DocSearch }]) => {
+        if( searchDocs.length === 0) {
+          return;
+        }
         initAlgolia(searchDocs, searchIndex, DocSearch);
       });
       initialized.current = true;
