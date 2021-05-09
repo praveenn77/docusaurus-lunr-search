@@ -27,22 +27,7 @@ module.exports = function (context, options) {
       const generatedFilesDir = config.resolve.alias['@generated']
       languages = utils.generateLunrClientJS(generatedFilesDir, options.languages);
       // Ensure that algolia docsearch css is its own chunk
-      return {
-        optimization: {
-          splitChunks: {
-            cacheGroups: {
-              algolia: {
-                name: 'algolia',
-                test: /algolia\.css$/,
-                chunks: `all`,
-                enforce: true,
-                // Set priority higher than docusaurus single-css extraction
-                priority: 60,
-              },
-            },
-          },
-        },
-      };
+      return {};
     },
     async contentLoaded({actions}) {
       actions.setGlobalData({"fileNames": fileNames})
