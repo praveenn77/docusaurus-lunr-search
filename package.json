@@ -60,8 +60,8 @@
   },
   "peerDependencies": {
     "@docusaurus/core": "^2.0.0-alpha.60 || ^2.0.0",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4"
+    "react": "^16.8.4 || ^17",
+    "react-dom": "^16.8.4 || ^17"
   },
   "engines": {
     "node": ">= 8.10.0"
