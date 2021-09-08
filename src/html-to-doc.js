@@ -74,7 +74,7 @@ function* scanDocuments({ path, url }) {
 }
 
 function getContent(element) {
-  return toText(element).replace(/\s\s+/g, ' ').replace(/(\r\n|\n|\r)/gm, ' ')
+  return toText(element).replace(/\s\s+/g, ' ').replace(/(\r\n|\n|\r)/gm, ' ').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 }
 
 function getSectionHeaders(markdown) {
