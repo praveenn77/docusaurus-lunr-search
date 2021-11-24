@@ -10,12 +10,14 @@ import classnames from "classnames";
 import { useHistory } from "@docusaurus/router";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { usePluginData } from '@docusaurus/useGlobalData';
+import useIsBrowser from "@docusaurus/useIsBrowser";
 const Search = props => {
   const initialized = useRef(false);
   const searchBarRef = useRef(null);
   const [indexReady, setIndexReady] = useState(false);
   const history = useHistory();
-  const { siteConfig = {}, isClient = false} = useDocusaurusContext();
+  const { siteConfig = {} } = useDocusaurusContext();
+  const isBrowser = useIsBrowser();
   const { baseUrl } = siteConfig;
   const initAlgolia = (searchDocs, searchIndex, DocSearch) => {
       new DocSearch({
@@ -78,7 +80,7 @@ const Search = props => {
     [props.isSearchBarExpanded]
   );
 
-  if (isClient) {
+  if (isBrowser) {
     loadAlgolia();
   }
 
