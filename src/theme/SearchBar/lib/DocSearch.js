@@ -21,6 +21,7 @@ class DocSearch {
         searchIndex,
         inputSelector,
         debug = false,
+        baseUrl = '/',
         queryDataCallback = null,
         autocompleteOptions = {
             debug: false,
@@ -55,7 +56,7 @@ class DocSearch {
 
         this.isSimpleLayout = layout === "simple";
 
-        this.client = new LunrSearchAdapter(searchDocs, searchIndex);
+        this.client = new LunrSearchAdapter(searchDocs, searchIndex, baseUrl);
 
         if (enhancedSearchInput) {
             this.input = DocSearch.injectSearchBox(this.input);
