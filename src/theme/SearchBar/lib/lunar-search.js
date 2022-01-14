@@ -2,9 +2,10 @@ import lunr from "@generated/lunr.client";
 lunr.tokenizer.separator = /[\s\-/]+/;
 
 class LunrSearchAdapter {
-    constructor(searchDocs, searchIndex) {
+    constructor(searchDocs, searchIndex, baseUrl = '/') {
         this.searchDocs = searchDocs;
         this.lunrIndex = lunr.Index.load(searchIndex);
+        this.baseUrl = baseUrl;
     }
 
     getLunrResult(input) {
@@ -25,7 +26,7 @@ class LunrSearchAdapter {
                 lvl0: doc.pageTitle || doc.title,
                 lvl1: doc.type === 0 ? null : doc.title
             },
-            url: doc.url,
+            url: this.baseUrl + doc.url,
             _snippetResult: formattedContent ? {
                 content: {
                     value: formattedContent,
