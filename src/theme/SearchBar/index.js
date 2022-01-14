@@ -23,11 +23,12 @@ const Search = props => {
       new DocSearch({
         searchDocs,
         searchIndex,
+        baseUrl,
         inputSelector: "#search_input_react",
         // Override algolia's default selection event, allowing us to do client-side
         // navigation and avoiding a full page refresh.
         handleSelected: (_input, _event, suggestion) => {
-          const url = suggestion.url ? baseUrl + suggestion.url : "/";
+          const url = suggestion.url || "/";
           // Use an anchor tag to parse the absolute url into a relative url
           // Alternatively, we can use new URL(suggestion.url) but its not supported in IE
           const a = document.createElement("a");
@@ -59,7 +60,7 @@ const Search = props => {
         import("./lib/DocSearch"),
         import("./algolia.css")
       ]).then(([searchDocs, searchIndex, { default: DocSearch }]) => {
-        if( searchDocs.length === 0) {
+        if (searchDocs.length === 0) {
           return;
         }
         initAlgolia(searchDocs, searchIndex, DocSearch);
