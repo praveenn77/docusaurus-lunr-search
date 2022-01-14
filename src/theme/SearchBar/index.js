@@ -10,12 +10,14 @@ import classnames from "classnames";
 import { useHistory } from "@docusaurus/router";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { usePluginData } from '@docusaurus/useGlobalData';
+import useIsBrowser from "@docusaurus/useIsBrowser";
 const Search = props => {
   const initialized = useRef(false);
   const searchBarRef = useRef(null);
   const [indexReady, setIndexReady] = useState(false);
   const history = useHistory();
-  const { siteConfig = {}, isClient = false} = useDocusaurusContext();
+  const { siteConfig = {} } = useDocusaurusContext();
+  const isBrowser = useIsBrowser();
   const { baseUrl } = siteConfig;
   const initAlgolia = (searchDocs, searchIndex, DocSearch) => {
       new DocSearch({
@@ -26,7 +28,7 @@ const Search = props => {
         // Override algolia's default selection event, allowing us to do client-side
         // navigation and avoiding a full page refresh.
         handleSelected: (_input, _event, suggestion) => {
-          const url = suggestion.url;
+          const url = suggestion.url || "/";
           // Use an anchor tag to parse the absolute url into a relative url
           // Alternatively, we can use new URL(suggestion.url) but its not supported in IE
           const a = document.createElement("a");
@@ -79,7 +81,7 @@ const Search = props => {
     [props.isSearchBarExpanded]
   );
 
-  if (isClient) {
+  if (isBrowser) {
     loadAlgolia();
   }
 

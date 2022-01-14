@@ -61,9 +61,19 @@ function getFilePaths(routesPaths, outDir, baseUrl, options = {}) {
     }
 
     routesPaths.forEach((route) => {
-        if ((!indexBaseUrl && route === baseUrl) || route === `${baseUrl}404.html`) return
-        route = route.substr(baseUrl.length)
-        const filePath = path.join(outDir, route, "index.html")
+        if (route === `${baseUrl}404.html`) return
+        let filePath;
+        if (route === baseUrl) {
+            if (!indexBaseUrl) {
+                return;
+            }
+            // Special case for index.html
+            route = route.substr(baseUrl.length)
+            filePath = path.join(outDir, route, "index.html")
+        } else {
+            route = route.substr(baseUrl.length)
+            filePath = path.join(outDir, `${route}.html`)
+        }
         // In case docs only mode routesPaths has baseUrl twice
         if(addedFiles.has(filePath)) return
         if (excludeRoutes.some((excludePattern) => minimatch(route, excludePattern))) {
