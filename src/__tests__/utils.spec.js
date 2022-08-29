@@ -1,6 +1,8 @@
 const assert = require('assert')
+const path = require('path')
 const utils = require('../utils')
 
+const outDir = '/out'
 const baseUrl = 'http://example.com/'
 
 describe('utils', () => {
@@ -15,7 +17,7 @@ describe('utils', () => {
       `${baseUrl}docs/changelogs/rovers/lunar`,
     ]
 
-    const [files, meta] = utils.getFilePaths(routesPaths, '/out', baseUrl, {
+    const [files, meta] = utils.getFilePaths(routesPaths, outDir, baseUrl, {
       excludeRoutes: ['docs/changelogs/**/*']
     })
 
@@ -28,5 +30,17 @@ describe('utils', () => {
     ])
 
     assert.equal(meta.excludedCount, 2)
+  })
+
+  it('should handle paths generated when using docusaurus.config.js `trailingSlash` option', () => {
+    const routesPaths = [
+      `${baseUrl}docs/tutorial/overview/`,
+    ]
+
+    const [files] = utils.getFilePaths(routesPaths, outDir, baseUrl)
+
+    assert.deepEqual(files.map(f => f.path), [
+      path.join(outDir, 'docs/tutorial/overview/index.html')
+    ])
   })
 })
