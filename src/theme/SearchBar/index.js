@@ -57,7 +57,7 @@ const Search = props => {
       Promise.all([
         getSearchDoc(),
         getLunrIndex(),
-        import("./lib/DocSearch"),
+        import("./DocSearch"),
         import("./algolia.css")
       ]).then(([searchDocs, searchIndex, { default: DocSearch }]) => {
         if (searchDocs.length === 0) {
