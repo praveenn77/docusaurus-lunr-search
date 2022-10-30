@@ -1,6 +1,6 @@
 {
   "name": "docusaurus-lunr-search",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Offline search component for Docusaurus V2",
   "main": "src/index.js",
   "publishConfig": {
