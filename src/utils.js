@@ -69,10 +69,12 @@ function getFilePaths(routesPaths, outDir, baseUrl, options = {}) {
             return;
         }
 
-        const candidatePaths = [
-            path.join(outDir, `${route}.html`),
-            path.join(outDir, route, "index.html")
-        ]
+        const candidatePaths = [route, route.substring(baseUrl.length)].flatMap(route => {
+            return [
+                path.join(outDir, `${route}.html`),
+                path.join(outDir, route, "index.html")
+            ]
+        });
 
         const filePath = candidatePaths.find(fs.existsSync);
         if(!fs.existsSync(filePath)) {
