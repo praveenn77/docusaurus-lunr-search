@@ -1,5 +1,3 @@
-Similar Plugin
-https://github.com/easyops-cn/docusaurus-search-local
 
 # docusaurus-lunr-search
 Offline Search for Docusaurus V2
