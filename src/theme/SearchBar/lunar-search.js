@@ -26,7 +26,7 @@ class LunrSearchAdapter {
                 lvl0: doc.pageTitle || doc.title,
                 lvl1: doc.type === 0 ? null : doc.title
             },
-            url: this.baseUrl !== '/' || doc.url.charAt(0) !== '/' ? this.baseUrl + doc.url : doc.url,
+            url: doc.url,
             _snippetResult: formattedContent ? {
                 content: {
                     value: formattedContent,
