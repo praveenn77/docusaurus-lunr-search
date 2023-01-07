@@ -10,7 +10,7 @@ Offline Search for Docusaurus V2
 
 ## Sample
 <p align="center">
-  <img width="460" height="300" src="https://raw.githubusercontent.com/lelouch77/docusaurus-lunr-search/master/assets/search-offline.png">
+<img width="548" alt="image" src="https://user-images.githubusercontent.com/20218070/211132504-07370011-2b3b-434e-8e2d-10159672a4eb.png">
 </p>
 
 
