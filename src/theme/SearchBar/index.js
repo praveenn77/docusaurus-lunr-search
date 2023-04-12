@@ -6,7 +6,7 @@
  */
 
 import React, { useRef, useCallback, useState } from "react";
-import classnames from "classnames";
+import clsx from "clsx";
 import { useHistory } from "@docusaurus/router";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { usePluginData } from '@docusaurus/useGlobalData';
@@ -90,7 +90,7 @@ const Search = props => {
       <span
         aria-label="expand searchbar"
         role="button"
-        className={classnames("search-icon", {
+        className={clsx("search-icon", {
           "search-icon-hidden": props.isSearchBarExpanded
         })}
         onClick={toggleSearchIconClick}
@@ -102,7 +102,7 @@ const Search = props => {
         type="search"
         placeholder={indexReady ? 'Search' : 'Loading...'}
         aria-label="Search"
-        className={classnames(
+        className={clsx(
           "navbar__search-input",
           { "search-bar-expanded": props.isSearchBarExpanded },
           { "search-bar": !props.isSearchBarExpanded }
