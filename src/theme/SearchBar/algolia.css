@@ -457,6 +457,14 @@
   padding-right: 2px;
 }
 
+.algolia-autocomplete .algolia-docsearch-suggestion--version {
+  display: block;
+  font-size: 0.65em;
+  color: #a6aab1;
+  padding-top: 2px;
+  padding-right: 2px;
+}
+
 .algolia-autocomplete .algolia-docsearch-suggestion--no-results {
   width: 100%;
   padding: 8px 0;

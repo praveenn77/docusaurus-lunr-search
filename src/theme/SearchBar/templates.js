@@ -25,6 +25,7 @@ const templates = {
         <div class="${suggestionPrefix}--subcategory-inline">{{{subcategory}}}</div>
         <div class="${suggestionPrefix}--title">{{{title}}}</div>
         {{#text}}<div class="${suggestionPrefix}--text">{{{text}}}</div>{{/text}}
+        {{#version}}<div class="${suggestionPrefix}--version">{{version}}</div>{{/version}}
       </div>
       {{/isTextOrSubcategoryNonEmpty}}
     </div>
