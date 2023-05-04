@@ -93,6 +93,11 @@ module.exports = {
     ],
 }
 ```
+
+### disableVersioning
+Docs versions are displayed by default. If you want to hide it, set this plugin option to `true`
+
+
 Thanks to [`algolia/docsearch.js`](https://github.com/algolia/docsearch), I modified it to create this search component 
 
 And thanks [cmfcmf](https://github.com/cmfcmf), I used the code from his library [docusaurus-search-local](https://github.com/cmfcmf/docusaurus-search-local) for multi-language support.

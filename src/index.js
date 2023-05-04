@@ -32,9 +32,11 @@ module.exports = function (context, options) {
     async contentLoaded({actions}) {
       actions.setGlobalData({"fileNames": fileNames})
     },
-    async postBuild({ routesPaths = [], outDir, baseUrl }) {
+    async postBuild({ routesPaths = [], outDir, baseUrl, plugins }) {
       console.log('docusaurus-lunr-search:: Building search docs and lunr index file')
       console.time('docusaurus-lunr-search:: Indexing time')
+
+      const docsPlugin = plugins.find((plugin) => plugin.name == 'docusaurus-plugin-content-docs');
 
       const [files, meta] = utils.getFilePaths(routesPaths, outDir, baseUrl, options)
       if (meta.excludedCount) {
@@ -58,6 +60,13 @@ module.exports = function (context, options) {
         }
       })
 
+      const loadedVersions = docsPlugin && !docsPlugin.options.disableVersioning && !(options.disableVersioning ?? false)
+        ? docsPlugin.content.loadedVersions.reduce(function (accum, currentVal) {
+            accum[currentVal.versionName] = currentVal.label;
+            return accum;
+          }, {})
+        : null;
+
       const addToSearchData = (d) => {
         lunrBuilder.add({
           id: searchDocuments.length,
@@ -68,7 +77,7 @@ module.exports = function (context, options) {
         searchDocuments.push(d);
       }
 
-      const indexedDocuments = await buildSearchData(files, addToSearchData)
+      const indexedDocuments = await buildSearchData(files, addToSearchData, loadedVersions)
       const lunrIndex = lunrBuilder.build()
       console.timeEnd('docusaurus-lunr-search:: Indexing time')
       console.log(`docusaurus-lunr-search:: indexed ${indexedDocuments} documents out of ${files.length}`)
@@ -103,7 +112,7 @@ module.exports = function (context, options) {
   };
 };
 
-function buildSearchData(files, addToSearchData) {
+function buildSearchData(files, addToSearchData, loadedVersions) {
   if (!files.length) {
     return Promise.resolve()
   }
@@ -138,7 +147,11 @@ function buildSearchData(files, addToSearchData) {
       if (nextIndex >= files.length) {
         break
       }
-      const worker = new Worker(path.join(__dirname, 'html-to-doc.js'))
+      const worker = new Worker(path.join(__dirname, 'html-to-doc.js'), {
+        workerData: {
+          loadedVersions: loadedVersions
+        },
+      })
       worker.on('error', reject)
       worker.on('message', (message) => {
         handleMessage(message, worker)

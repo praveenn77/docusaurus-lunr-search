@@ -51,6 +51,16 @@ function* scanDocuments({ path, url }) {
     return acc
   }, []).join(' ')
 
+  let version = null;
+  if (workerData.loadedVersions) {
+    const docsearchVersionElement = select('meta[name="docsearch:version"]', hast);
+
+    version = docsearchVersionElement
+      ? workerData.loadedVersions[docsearchVersionElement.properties.content]
+      : null;
+  }
+
+
   yield {
     title: pageTitle,
     type: 0,
@@ -59,6 +69,7 @@ function* scanDocuments({ path, url }) {
     // If there is no sections then push the complete content under page title
     content: sectionHeaders.length === 0 ? getContent(markdown) : '',
     keywords,
+    version,
   }
 
   for (const sectionDesc of sectionHeaders) {
@@ -69,6 +80,7 @@ function* scanDocuments({ path, url }) {
       pageTitle,
       url: `${url}#${ref}`,
       content,
+      version,
     }
   }
 }

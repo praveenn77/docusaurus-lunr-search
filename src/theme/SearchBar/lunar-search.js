@@ -27,6 +27,7 @@ class LunrSearchAdapter {
                 lvl1: doc.type === 0 ? null : doc.title
             },
             url: doc.url,
+            version: doc.version,
             _snippetResult: formattedContent ? {
                 content: {
                     value: formattedContent,
