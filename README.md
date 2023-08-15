@@ -35,17 +35,12 @@ module.exports = {
     plugins: [require.resolve('docusaurus-lunr-search')],
 }
 ```
-4. (Optional Step), If you want to customize the seach bar UI, then run docusaurus swizzle
-```
-npm run swizzle docusaurus-lunr-search SearchBar -- --eject --danger
-```
-it will generate files under `src/theme/SearchBar`, you can skip this step if you don't wish to customize the search bar
 
-5. Then build your Docusaurus project
+4. Then build your Docusaurus project
 ```
 npm run build
 ```
-6. Serve your application
+5. Serve your application
 ```
 npx http-server ./build
 ```
