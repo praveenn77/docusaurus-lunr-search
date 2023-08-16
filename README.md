@@ -76,6 +76,54 @@ module.exports = {
   ],
 }
 ```
+### includeRoutes
+
+You can include only specific routes for search by using this option:
+
+```
+module.exports = {
+  // ...
+    plugins: [
+    [require.resolve('docusaurus-lunr-search'), {
+        includeRoutes: [
+            'docs/changelogs/**/*', // include only changelogs from indexing
+        ]
+    }]
+  ],
+}
+```
+
+### stopWords
+
+You can add stop words(words that are exclude from search result) to the search index by using this option:
+You can find the  default list of stop words used by lunrjs [here](https://lunrjs.com/docs/stop_word_filter.js.html)
+
+```
+module.exports = {
+  // ...
+    plugins: [
+    [require.resolve('docusaurus-lunr-search'), {
+        stopWords: ['a', 'an', 'the']
+    }]
+  ],
+}
+```
+
+### excludeTags
+
+You can exclude certain tags from the search by using this option:
+
+```
+module.exports = {
+  // ...
+    plugins: [
+    [require.resolve('docusaurus-lunr-search'), {
+        excludeTags: ['h3'] // exclude h3 tags from indexing
+    }]
+  ],
+}
+```
+
 ### indexBaseUrl
 Base url will not indexed by default, if you want to index the base url set this option to `true`
 ```

@@ -73,7 +73,7 @@ module.exports = function (context, options) {
         lunrBuilder.pipeline.remove(lunr.stopWordFilter);
       }
       const addToSearchData = (d) => {
-        if (options.excludeTag && options.excludeTag.includes(d.tagName)) {
+        if (options.excludeTags && options.excludeTags.includes(d.tagName)) {
           return;
         }
         lunrBuilder.add({
