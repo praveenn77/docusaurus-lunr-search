@@ -35,15 +35,12 @@ module.exports = {
     plugins: [require.resolve('docusaurus-lunr-search')],
 }
 ```
-4. Then run docusaurus swizzle
-```
-npm run swizzle docusaurus-lunr-search SearchBar -- --eject --danger
-```
-5. Then build your Docusaurus project
+
+4. Then build your Docusaurus project
 ```
 npm run build
 ```
-6. Serve your application
+5. Serve your application
 ```
 npx http-server ./build
 ```
