@@ -29,8 +29,8 @@ module.exports = function (context, options) {
       languages = utils.generateLunrClientJS(generatedFilesDir, options.languages);
       return {};
     },
-    async contentLoaded({actions}) {
-      actions.setGlobalData({"fileNames": fileNames})
+    async contentLoaded({ actions }) {
+      actions.setGlobalData({ "fileNames": fileNames })
     },
     async postBuild({ routesPaths = [], outDir, baseUrl, plugins }) {
       console.log('docusaurus-lunr-search:: Building search docs and lunr index file')
@@ -46,7 +46,7 @@ module.exports = function (context, options) {
       const lunrBuilder = lunr(function (builder) {
         if (languages) {
           this.use(languages)
-        } 
+        }
         this.ref('id')
         this.field('title', { boost: 200 })
         this.field('content', { boost: 2 })
@@ -62,12 +62,20 @@ module.exports = function (context, options) {
 
       const loadedVersions = docsPlugin && !docsPlugin.options.disableVersioning && !(options.disableVersioning ?? false)
         ? docsPlugin.content.loadedVersions.reduce(function (accum, currentVal) {
-            accum[currentVal.versionName] = currentVal.label;
-            return accum;
-          }, {})
+          accum[currentVal.versionName] = currentVal.label;
+          return accum;
+        }, {})
         : null;
 
+      if (options.stopWords) {
+        const customStopWords = lunr.generateStopWordFilter(options.stopWords)
+        lunrBuilder.pipeline.before(lunr.stopWordFilter, customStopWords);
+        lunrBuilder.pipeline.remove(lunr.stopWordFilter);
+      }
       const addToSearchData = (d) => {
+        if (options.excludeTag && options.excludeTag.includes(d.tagName)) {
+          return;
+        }
         lunrBuilder.add({
           id: searchDocuments.length,
           title: d.title,
@@ -81,7 +89,7 @@ module.exports = function (context, options) {
       const lunrIndex = lunrBuilder.build()
       console.timeEnd('docusaurus-lunr-search:: Indexing time')
       console.log(`docusaurus-lunr-search:: indexed ${indexedDocuments} documents out of ${files.length}`)
-      
+
       const searchDocFileContents = JSON.stringify(searchDocuments)
       console.log('docusaurus-lunr-search:: writing search-doc.json')
       // This file is written for backwards-compatibility with components swizzled from v2.1.12 or earlier.
@@ -118,7 +126,7 @@ function buildSearchData(files, addToSearchData, loadedVersions) {
   }
   let activeWorkersCount = 0
   const workerCount = Math.max(2, os.cpus().length)
-  
+
   console.log(`docusaurus-lunr-search:: Start scanning documents in ${Math.min(workerCount, files.length)} threads`)
   const gauge = new Guage()
   gauge.show('scanning documents...')
@@ -142,7 +150,7 @@ function buildSearchData(files, addToSearchData, loadedVersions) {
         }
       }
     }
-  
+
     for (let i = 0; i < workerCount; i++) {
       if (nextIndex >= files.length) {
         break

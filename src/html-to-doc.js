@@ -73,7 +73,7 @@ function* scanDocuments({ path, url }) {
   }
 
   for (const sectionDesc of sectionHeaders) {
-    const { title, content, ref } = sectionDesc;
+    const { title, content, ref, tagName } = sectionDesc;
     yield {
       title,
       type: 1,
@@ -81,6 +81,7 @@ function* scanDocuments({ path, url }) {
       url: `${url}#${ref}`,
       content,
       version,
+      tagName
     }
   }
 }
@@ -98,6 +99,7 @@ function getSectionHeaders(markdown) {
     result.push({
       title: toText(currentSection).replace(/^#+/, '').replace(/#$/, ''),
       ref: ref ? ref.properties.id : '#',
+      tagName: currentSection.tagName || '#',
       content: contentsAcc,
     })
     contentsAcc = ''

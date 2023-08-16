@@ -55,7 +55,7 @@ function generateLunrClientJS(outDir, language = "en") {
 function getFilePaths(routesPaths, outDir, baseUrl, options = {}) {
     const files = []
     const addedFiles = new Set();
-    const { excludeRoutes = [], indexBaseUrl = false } = options
+    const { excludeRoutes = [], includeRoutes = [], indexBaseUrl = false } = options
     const meta = {
         excludedCount: 0,
     }
@@ -83,8 +83,16 @@ function getFilePaths(routesPaths, outDir, baseUrl, options = {}) {
             console.warn(`docusaurus-lunr-search: could not resolve file for route '${route}', it will be missing in the search index`);
         }
 
-        // In case docs only mode routesPaths has baseUrl twice
+        // if we already added this file, skip it
         if(addedFiles.has(filePath)) return
+
+        // if we have include routes, skip if this route doesn't match any of them
+        if(includeRoutes.length > 0 && !(includeRoutes.some((includePattern) => minimatch(route, includePattern)))) {
+            meta.excludedCount++
+            return
+        }
+
+        // if we have exclude routes, skip if this route matches any of them
         if (excludeRoutes.some((excludePattern) => minimatch(route, excludePattern))) {
             meta.excludedCount++
             return
