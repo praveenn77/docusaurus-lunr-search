@@ -42,12 +42,17 @@ npm run build
 ```
 5. Serve your application
 ```
+npm run serve 
+```
+or
+
+```
 npx http-server ./build
 ```
 
 Note: Docusaurus search information can only be generated from a production build. Local development is currently not supported.
 
-## Language options
+## Using an option (eg. `languages`) in the plugin
 ```
 module.exports = {
   // ...
@@ -58,89 +63,18 @@ module.exports = {
 ```
 Supports all the language listed here https://github.com/MihaiValentin/lunr-languages
 
-## Other options
+## Options available
 
-### excludeRoutes
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `languages` | `Array` | `['en']` | Language codes to use for stemming, Supports all the language listed here https://github.com/MihaiValentin/lunr-languages |
+| `indexBaseUrl` | `Boolean` | `false` | Base url will not indexed by default, if you want to index the base url set this option to `true` |
+| `excludeRoutes` | `Array` | `[]` | Exclude certain routes from the search |
+| `includeRoutes` | `Array` | `[]` | Include only specific routes for search |
+| `stopWords` | `Array` | `[]` | Add stop words(words that are exclude from search result) to the search index |
+| `excludeTags` | `Array` | `[]` | Exclude certain tags from the search |
+| `disableVersioning` | `Boolean` | `false` | Docs versions are displayed by default. If you want to hide it, set this plugin option to `true` |
 
-You can exclude certain routes from the search by using this option:
-
-```
-module.exports = {
-  // ...
-    plugins: [
-    [require.resolve('docusaurus-lunr-search'), {
-        excludeRoutes: [
-            'docs/changelogs/**/*', // exclude changelogs from indexing
-        ]
-    }]
-  ],
-}
-```
-### includeRoutes
-
-You can include only specific routes for search by using this option:
-
-```
-module.exports = {
-  // ...
-    plugins: [
-    [require.resolve('docusaurus-lunr-search'), {
-        includeRoutes: [
-            'docs/changelogs/**/*', // include only changelogs from indexing
-        ]
-    }]
-  ],
-}
-```
-
-### stopWords
-
-You can add stop words(words that are exclude from search result) to the search index by using this option:
-You can find the  default list of stop words used by lunrjs [here](https://lunrjs.com/docs/stop_word_filter.js.html)
-
-```
-module.exports = {
-  // ...
-    plugins: [
-    [require.resolve('docusaurus-lunr-search'), {
-        stopWords: ['a', 'an', 'the']
-    }]
-  ],
-}
-```
-
-### excludeTags
-
-You can exclude certain tags from the search by using this option:
-
-```
-module.exports = {
-  // ...
-    plugins: [
-    [require.resolve('docusaurus-lunr-search'), {
-        excludeTags: ['h3'] // exclude h3 tags from indexing
-    }]
-  ],
-}
-```
-
-### indexBaseUrl
-Base url will not indexed by default, if you want to index the base url set this option to `true`
-```
-module.exports = {
-  // ...
-    plugins: [
-        [require.resolve('docusaurus-lunr-search'),
-            {
-                indexBaseUrl: true
-            }
-        ]
-    ],
-}
-```
-
-### disableVersioning
-Docs versions are displayed by default. If you want to hide it, set this plugin option to `true`
 
 
 Thanks to [`algolia/docsearch.js`](https://github.com/algolia/docsearch), I modified it to create this search component 
