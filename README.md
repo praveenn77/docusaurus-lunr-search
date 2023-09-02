@@ -75,6 +75,12 @@ Supports all the language listed here https://github.com/MihaiValentin/lunr-lang
 | `excludeTags` | `Array` | `[]` | Exclude certain tags from the search |
 | `disableVersioning` | `Boolean` | `false` | Docs versions are displayed by default. If you want to hide it, set this plugin option to `true` |
 
+## Using FrontMatter
+By default the library will search for heading only in the children of `.markdown` element. 
+If you are using a FrontMatter and you have headings that are encapsulated by other elements, such as divs, then add the attribute `data-search-children` to the elements having headings. 
+
+Check this [issue #115](https://github.com/praveenn77/docusaurus-lunr-search/issues/115) for more detail 
+
 
 
 Thanks to [`algolia/docsearch.js`](https://github.com/algolia/docsearch), I modified it to create this search component 

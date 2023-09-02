@@ -10,6 +10,7 @@ const is = require('unist-util-is')
 const toVfile = require('to-vfile')
 
 const sectionHeaderTest = ({ tagName }) => ['h2', 'h3'].includes(tagName)
+const customSectionHeaderTest = ({ properties }) => properties && properties.dataSearchChildren
 
 // Build search data for a html
 function* scanDocuments({ path, url }) {
@@ -90,9 +91,8 @@ function getContent(element) {
   return toText(element).replace(/\s\s+/g, ' ').replace(/(\r\n|\n|\r)/gm, ' ').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 }
 
-function getSectionHeaders(markdown) {
+function getSectionHeaders(element, result = []) {
   let currentSection = null
-  const result = []
   let contentsAcc = ''
   const emitCurrent = () => {
     const ref = select('.anchor', currentSection)
@@ -106,13 +106,16 @@ function getSectionHeaders(markdown) {
     currentSection = null
   }
 
-  for (const node of markdown.children) {
+  for (const node of element.children) {
     if (is(node, sectionHeaderTest)) {
       if (currentSection) {
         emitCurrent()
       }
       currentSection = node
-    } else if (currentSection) {
+    } else if (is(node, customSectionHeaderTest)) {
+      getSectionHeaders(node, result)
+    }
+    else if (currentSection) {
       contentsAcc += getContent(node) + ' '
     }
   }
