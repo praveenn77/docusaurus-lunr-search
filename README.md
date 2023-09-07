@@ -79,12 +79,12 @@ Supports all the language listed here https://github.com/MihaiValentin/lunr-lang
 By default, this library will only search for headings that are
 **direct children** of the `.markdown` element. 
 
-If you would like to render content on a swizzled DocItem component,
-or any other built-in Docusaurus component, and want this library to
-**index the headings inside those custom elements even if they are not
-direct children of the `.markdown` element**, then add the attribute
+If you would like to render content inside the `.markdown` element on
+a swizzled DocItem component, and want this library to **index the
+headings inside those custom elements even if they are not direct
+children of the `.markdown` element**, then add the attribute
 `data-search-children` to a parent element of the headings you want to
-index. 
+index.
 
 The `data-search-children` attribute will cause this library to look
 for all headings inside that element, including both direct and
