@@ -112,7 +112,7 @@ function getSectionHeaders(element, result = [], shouldIndexChildren = false) {
         emitCurrent()
       }
       currentSection = node
-    } else if (is(node, shouldIndexChildrenTest) || (shouldIndexChildren && node.children.length)) {
+    } else if (is(node, shouldIndexChildrenTest) || (shouldIndexChildren && node.children)) {
       getSectionHeaders(node, result, true)
     }
     else if (currentSection) {
