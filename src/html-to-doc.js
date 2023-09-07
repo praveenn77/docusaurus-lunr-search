@@ -22,9 +22,7 @@ function* scanDocuments({ path, url }) {
     return
   }
 
-  const hast = unified()
-    .use(parse, { emitParseErrors: false })
-    .parse(vfile)
+  const hast = unified().use(parse, { emitParseErrors: false }).parse(vfile)
 
   const article = select('article', hast)
   if (!article) {
@@ -42,22 +40,26 @@ function* scanDocuments({ path, url }) {
   const pageTitle = toText(pageTitleElement)
   const sectionHeaders = getSectionHeaders(markdown)
 
-  const keywords = selectAll('meta[name="keywords"]', hast).reduce((acc, metaNode) => {
-    if (metaNode.properties.content) {
-      return acc.concat(metaNode.properties.content.replace(/,/g, ' '))
-    }
-    return acc
-  }, []).join(' ')
+  const keywords = selectAll('meta[name="keywords"]', hast)
+    .reduce((acc, metaNode) => {
+      if (metaNode.properties.content) {
+        return acc.concat(metaNode.properties.content.replace(/,/g, ' '))
+      }
+      return acc
+    }, [])
+    .join(' ')
 
-  let version = null;
+  let version = null
   if (workerData.loadedVersions) {
-    const docsearchVersionElement = select('meta[name="docsearch:version"]', hast);
+    const docsearchVersionElement = select(
+      'meta[name="docsearch:version"]',
+      hast
+    )
 
     version = docsearchVersionElement
       ? workerData.loadedVersions[docsearchVersionElement.properties.content]
-      : null;
+      : null
   }
-
 
   yield {
     title: pageTitle,
@@ -67,11 +69,11 @@ function* scanDocuments({ path, url }) {
     // If there is no sections then push the complete content under page title
     content: sectionHeaders.length === 0 ? getContent(markdown) : '',
     keywords,
-    version,
+    version
   }
 
   for (const sectionDesc of sectionHeaders) {
-    const { title, content, ref, tagName } = sectionDesc;
+    const { title, content, ref, tagName } = sectionDesc
     yield {
       title,
       type: 1,
@@ -85,7 +87,13 @@ function* scanDocuments({ path, url }) {
 }
 
 function getContent(element) {
-  return toText(element).replace(/\s\s+/g, ' ').replace(/(\r\n|\n|\r)/gm, ' ').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+  return toText(element)
+    .replace(/\s\s+/g, ' ')
+    .replace(/(\r\n|\n|\r)/gm, ' ')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
 }
 
 function getSectionHeaders(element) {
@@ -112,7 +120,7 @@ function getSectionHeaders(element) {
   ) {
     let currentHeadingNode = parentHeadingNode
 
-  for (const node of element.children) {
+    for (const node of element.children) {
       if (is(node, isHeadingNodeTest)) {
         trackHeadingNode(node)
         currentHeadingNode = node
@@ -132,7 +140,7 @@ function getSectionHeaders(element) {
     return {
       ...rest,
       content: node['_indexed-content']
-  }
+    }
   })
 }
 
