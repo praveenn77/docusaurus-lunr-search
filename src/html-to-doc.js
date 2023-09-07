@@ -9,9 +9,6 @@ const toText = require('hast-util-to-text')
 const is = require('unist-util-is')
 const toVfile = require('to-vfile')
 
-const sectionHeaderTest = ({ tagName }) => ['h2', 'h3'].includes(tagName)
-const shouldIndexChildrenTest = ({ properties }) => properties && properties.dataSearchChildren
-
 // Build search data for a html
 function* scanDocuments({ path, url }) {
   let vfile
@@ -91,39 +88,52 @@ function getContent(element) {
   return toText(element).replace(/\s\s+/g, ' ').replace(/(\r\n|\n|\r)/gm, ' ').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 }
 
-function getSectionHeaders(element, result = [], shouldIndexChildren = false) {
-  let currentSection = null
-  let contentsAcc = ''
-  const emitCurrent = () => {
-    const ref = select('.anchor', currentSection)
-    result.push({
-      title: toText(currentSection).replace(/^#+/, '').replace(/#$/, ''),
+function getSectionHeaders(element) {
+  const isHeadingNodeTest = ({ tagName }) => ['h2', 'h3'].includes(tagName)
+  const shouldIndexChildrenTest = ({ properties }) =>
+    properties && properties.dataSearchChildren
+
+  let headingNodes = []
+
+  const trackHeadingNode = (node) => {
+    const ref = select('.anchor', node)
+    headingNodes.push({
+      title: toText(node).replace(/^#+/, '').replace(/#$/, ''),
       ref: ref ? ref.properties.id : '#',
-      tagName: currentSection.tagName || '#',
-      content: contentsAcc,
+      tagName: node.tagName || '#',
+      node: node
     })
-    contentsAcc = ''
-    currentSection = null
   }
+
+  function traverseNodeAndIndex(
+    element,
+    isIndexingChildren = false,
+    parentHeadingNode = null
+  ) {
+    let currentHeadingNode = parentHeadingNode
 
   for (const node of element.children) {
-    if (is(node, sectionHeaderTest)) {
-      if (currentSection) {
-        emitCurrent()
+      if (is(node, isHeadingNodeTest)) {
+        trackHeadingNode(node)
+        currentHeadingNode = node
+      } else if (is(node, shouldIndexChildrenTest)) {
+        traverseNodeAndIndex(node, true, currentHeadingNode)
+      } else if (isIndexingChildren && node.children && node.tagName !== 'p') {
+        traverseNodeAndIndex(node, true, currentHeadingNode)
+      } else if (currentHeadingNode) {
+        currentHeadingNode['_indexed-content'] = getContent(node) + ' '
       }
-      currentSection = node
-    } else if (is(node, shouldIndexChildrenTest) || (shouldIndexChildren && node.children)) {
-      getSectionHeaders(node, result, true)
     }
-    else if (currentSection) {
-      contentsAcc += getContent(node) + ' '
-    }
-  }
-  if (currentSection) {
-    emitCurrent()
   }
 
-  return result
+  traverseNodeAndIndex(element)
+
+  return headingNodes.map(({ node, ...rest }) => {
+    return {
+      ...rest,
+      content: node['_indexed-content']
+  }
+  })
 }
 
 function processFile(file) {
