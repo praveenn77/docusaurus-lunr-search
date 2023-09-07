@@ -65,22 +65,32 @@ Supports all the language listed here https://github.com/MihaiValentin/lunr-lang
 
 ## Options available
 
-| Option | Type | Default | Description |
-| --- | --- | --- | --- |
-| `languages` | `Array` | `['en']` | Language codes to use for stemming, Supports all the language listed here https://github.com/MihaiValentin/lunr-languages |
-| `indexBaseUrl` | `Boolean` | `false` | Base url will not indexed by default, if you want to index the base url set this option to `true` |
-| `excludeRoutes` | `Array` | `[]` | Exclude certain routes from the search |
-| `includeRoutes` | `Array` | `[]` | Include only specific routes for search |
-| `stopWords` | `Array` | `[]` | Add stop words(words that are exclude from search result) to the search index |
-| `excludeTags` | `Array` | `[]` | Exclude certain tags from the search |
-| `disableVersioning` | `Boolean` | `false` | Docs versions are displayed by default. If you want to hide it, set this plugin option to `true` |
+| Option              | Type      | Default  | Description                                                                                                               |
+| ------------------- | --------- | -------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `languages`         | `Array`   | `['en']` | Language codes to use for stemming, Supports all the language listed here https://github.com/MihaiValentin/lunr-languages |
+| `indexBaseUrl`      | `Boolean` | `false`  | Base url will not indexed by default, if you want to index the base url set this option to `true`                         |
+| `excludeRoutes`     | `Array`   | `[]`     | Exclude certain routes from the search                                                                                    |
+| `includeRoutes`     | `Array`   | `[]`     | Include only specific routes for search                                                                                   |
+| `stopWords`         | `Array`   | `[]`     | Add stop words(words that are exclude from search result) to the search index                                             |
+| `excludeTags`       | `Array`   | `[]`     | Exclude certain tags from the search                                                                                      |
+| `disableVersioning` | `Boolean` | `false`  | Docs versions are displayed by default. If you want to hide it, set this plugin option to `true`                          |
 
-## Using FrontMatter
-By default the library will search for heading only in the children of `.markdown` element. 
-If you are using a FrontMatter and you have headings that are encapsulated by other elements, such as divs, then add the attribute `data-search-children` to the elements having headings. 
-This also applies for all descendants of the wrapper with data-search-children.
+## Indexing non-direct children headings of `.markdown`
+By default, this library will only search for headings that are
+**direct children** of the `.markdown` element. 
 
-Check this [issue #115](https://github.com/praveenn77/docusaurus-lunr-search/issues/115) for more detail 
+If you would like to render content on a swizzled DocItem component,
+or any other built-in Docusaurus component, and want this library to
+**index the headings inside those custom elements even if they are not
+direct children of the `.markdown` element**, then add the attribute
+`data-search-children` to a parent element of the headings you want to
+index. 
+
+The `data-search-children` attribute will cause this library to look
+for all headings inside that element, including both direct and
+indirect children (E.g. 'grandchildren' nodes).
+
+Check this [issue #115](https://github.com/praveenn77/docusaurus-lunr-search/issues/115) for more details.
 
 
 
