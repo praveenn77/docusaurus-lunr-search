@@ -118,6 +118,9 @@ function getSectionHeaders(element, result = []) {
     else if (currentSection) {
       contentsAcc += getContent(node) + ' '
     }
+    if (node.children) {
+      getSectionHeaders(node, result);
+    }
   }
   if (currentSection) {
     emitCurrent()
