@@ -79,6 +79,8 @@ Supports all the language listed here https://github.com/MihaiValentin/lunr-lang
 By default the library will search for heading only in the children of `.markdown` element. 
 If you are using a FrontMatter and you have headings that are encapsulated by other elements, such as divs, then add the attribute `data-search-children` to the elements having headings. 
 
+In this update, we have enhanced the `getSectionHeaders` function to provide better support for nested content structures. This modification allows the function to search for section headers not only in the immediate children of an element but also in its descendants. 
+
 Check this [issue #115](https://github.com/praveenn77/docusaurus-lunr-search/issues/115) for more detail 
 
 
