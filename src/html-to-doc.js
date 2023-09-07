@@ -112,8 +112,8 @@ function getSectionHeaders(element, result = [], shouldIndexChildren = false) {
         emitCurrent()
       }
       currentSection = node
-    } else if (is(node, shouldIndexChildrenTest)) {
-      getSectionHeaders(node, result, shouldIndexChildren)
+    } else if (is(node, shouldIndexChildrenTest) || (shouldIndexChildren && node.children.length)) {
+      getSectionHeaders(node, result, true)
     }
     else if (currentSection) {
       contentsAcc += getContent(node) + ' '
