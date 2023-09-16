@@ -101,47 +101,43 @@ function getSectionHeaders(element) {
   const shouldIndexChildrenTest = ({ properties }) =>
     properties && properties.dataSearchChildren
 
-  let headingNodes = []
+  const headerDocs = []
 
   const trackHeadingNode = (node) => {
     const ref = select('.anchor', node)
-    headingNodes.push({
+    const searchDoc = {
       title: toText(node).replace(/^#+/, '').replace(/#$/, ''),
       ref: ref ? ref.properties.id : '#',
       tagName: node.tagName || '#',
-      node: node
-    })
+      content: ''
+    }
+    headerDocs.push(searchDoc)
+    return searchDoc;
   }
 
   function traverseNodeAndIndex(
     element,
     isIndexingChildren = false,
-    parentHeadingNode = null
+    searchDoc = null
   ) {
-    let currentHeadingNode = parentHeadingNode
+
 
     for (const node of element.children) {
       if (is(node, isHeadingNodeTest)) {
-        trackHeadingNode(node)
-        currentHeadingNode = node
+        searchDoc = trackHeadingNode(node)
       } else if (is(node, shouldIndexChildrenTest)) {
-        traverseNodeAndIndex(node, true, currentHeadingNode)
+        traverseNodeAndIndex(node, true, searchDoc)
       } else if (isIndexingChildren && node.children && node.tagName !== 'p') {
-        traverseNodeAndIndex(node, true, currentHeadingNode)
-      } else if (currentHeadingNode) {
-        currentHeadingNode['_indexed-content'] = getContent(node) + ' '
+        traverseNodeAndIndex(node, true, searchDoc)
+      } else if (searchDoc) {
+        searchDoc.content +=  `${getContent(node)} `
       }
     }
   }
 
   traverseNodeAndIndex(element)
 
-  return headingNodes.map(({ node, ...rest }) => {
-    return {
-      ...rest,
-      content: node['_indexed-content']
-    }
-  })
+  return headerDocs;
 }
 
 function processFile(file) {
