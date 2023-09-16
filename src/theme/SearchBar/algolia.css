@@ -554,3 +554,7 @@ html[data-theme='dark'] .algolia-docsearch-suggestion--title {
 html[data-theme='dark'] .ds-cursor .algolia-docsearch-suggestion--wrapper {
     background: var(--ifm-background-surface-color) !important;
 }
+
+mark{
+  background-color: lightblue;
+}

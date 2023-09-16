@@ -90,7 +90,7 @@ module.exports = function (context, options) {
       console.timeEnd('docusaurus-lunr-search:: Indexing time')
       console.log(`docusaurus-lunr-search:: indexed ${indexedDocuments} documents out of ${files.length}`)
 
-      const searchDocFileContents = JSON.stringify(searchDocuments)
+      const searchDocFileContents = JSON.stringify({ searchDocs: searchDocuments, options })
       console.log('docusaurus-lunr-search:: writing search-doc.json')
       // This file is written for backwards-compatibility with components swizzled from v2.1.12 or earlier.
       fs.writeFileSync(

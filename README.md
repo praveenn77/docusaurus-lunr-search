@@ -72,7 +72,8 @@ Supports all the language listed here https://github.com/MihaiValentin/lunr-lang
 | `excludeRoutes`     | `Array`   | `[]`     | Exclude certain routes from the search                                                                                    |
 | `includeRoutes`     | `Array`   | `[]`     | Include only specific routes for search                                                                                   |
 | `stopWords`         | `Array`   | `[]`     | Add stop words(words that are exclude from search result) to the search index                                             |
-| `excludeTags`       | `Array`   | `[]`     | Exclude certain tags from the search                                                                                      |
+| `excludeTags`       | `Array`   | `[]`     | Exclude certain tags from the search      
+| `highlightResult`   | `Boolean` | `false`  | Enable it to highlight the searched word in the result page. Used `mark.js` for highlighting. <br /> You can customize the highlight color using css <br /> ``` mark  { background-color: red !important; color: green !important }```                                                                                |
 | `disableVersioning` | `Boolean` | `false`  | Docs versions are displayed by default. If you want to hide it, set this plugin option to `true`                          |
 
 ## Indexing non-direct children headings of `.markdown`

@@ -1,16 +1,10 @@
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
 import React, { useRef, useCallback, useState } from "react";
 import clsx from "clsx";
 import { useHistory } from "@docusaurus/router";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { usePluginData } from '@docusaurus/useGlobalData';
 import useIsBrowser from "@docusaurus/useIsBrowser";
+import { HighlightSearchResults } from "./HighlightSearchResults";
 const Search = props => {
   const initialized = useRef(false);
   const searchBarRef = useRef(null);
@@ -19,26 +13,42 @@ const Search = props => {
   const { siteConfig = {} } = useDocusaurusContext();
   const isBrowser = useIsBrowser();
   const { baseUrl } = siteConfig;
-  const initAlgolia = (searchDocs, searchIndex, DocSearch) => {
-      new DocSearch({
-        searchDocs,
-        searchIndex,
-        baseUrl,
-        inputSelector: "#search_input_react",
-        // Override algolia's default selection event, allowing us to do client-side
-        // navigation and avoiding a full page refresh.
-        handleSelected: (_input, _event, suggestion) => {
-          const url = suggestion.url || "/";
-          // Use an anchor tag to parse the absolute url into a relative url
-          // Alternatively, we can use new URL(suggestion.url) but its not supported in IE
-          const a = document.createElement("a");
-          a.href = url;
-          // Algolia use closest parent element id #__docusaurus when a h1 page title does not have an id
-          // So, we can safely remove it. See https://github.com/facebook/docusaurus/issues/1828 for more details.
+  const initAlgolia = (searchDocs, searchIndex, DocSearch, options) => {
+    new DocSearch({
+      searchDocs,
+      searchIndex,
+      baseUrl,
+      inputSelector: "#search_input_react",
+      // Override algolia's default selection event, allowing us to do client-side
+      // navigation and avoiding a full page refresh.
+      handleSelected: (_input, _event, suggestion) => {
+        const url = suggestion.url || "/";
+        // Use an anchor tag to parse the absolute url into a relative url
+        // Alternatively, we can use new URL(suggestion.url) but its not supported in IE
+        const a = document.createElement("a");
+        a.href = url;
 
-          history.push(url);
+        // Get the highlight word from the suggestion.
+        let wordToHighlight = '';
+        if (options.highlightResult) {
+          try {
+            const matchedLine = suggestion.text || suggestion.subcategory || suggestion.title;
+            const matchedWordResult = matchedLine.match(new RegExp('<span.+span>\\w*', 'g'));
+            if (matchedWordResult && matchedWordResult.length > 0) {
+              const tempDoc = document.createElement('div');
+              tempDoc.innerHTML = matchedWordResult[0];
+              wordToHighlight = tempDoc.textContent;
+            }
+          } catch (e) {
+            console.log(e);
+          }
         }
-      });
+
+        history.push(url, {
+          highlightState: { wordToHighlight },
+        });
+      }
+    });
   };
 
   const pluginData = usePluginData('docusaurus-lunr-search');
@@ -59,11 +69,12 @@ const Search = props => {
         getLunrIndex(),
         import("./DocSearch"),
         import("./algolia.css")
-      ]).then(([searchDocs, searchIndex, { default: DocSearch }]) => {
+      ]).then(([searchDocFile, searchIndex, { default: DocSearch }]) => {
+        const { searchDocs, options } = searchDocFile;
         if (searchDocs.length === 0) {
           return;
         }
-        initAlgolia(searchDocs, searchIndex, DocSearch);
+        initAlgolia(searchDocs, searchIndex, DocSearch, options);
         setIndexReady(true);
       });
       initialized.current = true;
@@ -114,6 +125,7 @@ const Search = props => {
         ref={searchBarRef}
         disabled={!indexReady}
       />
+      <HighlightSearchResults />
     </div>
   );
 };

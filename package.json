@@ -1,6 +1,6 @@
 {
   "name": "docusaurus-lunr-search",
-  "version": "2.4.3",
+  "version": "3.0.0",
   "description": "Offline search component for Docusaurus V2",
   "main": "src/index.js",
   "publishConfig": {
@@ -48,6 +48,7 @@
     "hogan.js": "^3.0.2",
     "lunr": "^2.3.8",
     "lunr-languages": "^1.4.0",
+    "mark.js": "^8.11.1",
     "minimatch": "^3.0.4",
     "object-assign": "^4.1.1",
     "rehype-parse": "^7.0.1",
