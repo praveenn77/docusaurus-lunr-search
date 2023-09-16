@@ -9,9 +9,6 @@ const toText = require('hast-util-to-text')
 const is = require('unist-util-is')
 const toVfile = require('to-vfile')
 
-const sectionHeaderTest = ({ tagName }) => ['h2', 'h3'].includes(tagName)
-const customSectionHeaderTest = ({ properties }) => properties && properties.dataSearchChildren
-
 // Build search data for a html
 function* scanDocuments({ path, url }) {
   let vfile
@@ -25,9 +22,7 @@ function* scanDocuments({ path, url }) {
     return
   }
 
-  const hast = unified()
-    .use(parse, { emitParseErrors: false })
-    .parse(vfile)
+  const hast = unified().use(parse, { emitParseErrors: false }).parse(vfile)
 
   const article = select('article', hast)
   if (!article) {
@@ -45,22 +40,26 @@ function* scanDocuments({ path, url }) {
   const pageTitle = toText(pageTitleElement)
   const sectionHeaders = getSectionHeaders(markdown)
 
-  const keywords = selectAll('meta[name="keywords"]', hast).reduce((acc, metaNode) => {
-    if (metaNode.properties.content) {
-      return acc.concat(metaNode.properties.content.replace(/,/g, ' '))
-    }
-    return acc
-  }, []).join(' ')
+  const keywords = selectAll('meta[name="keywords"]', hast)
+    .reduce((acc, metaNode) => {
+      if (metaNode.properties.content) {
+        return acc.concat(metaNode.properties.content.replace(/,/g, ' '))
+      }
+      return acc
+    }, [])
+    .join(' ')
 
-  let version = null;
+  let version = null
   if (workerData.loadedVersions) {
-    const docsearchVersionElement = select('meta[name="docsearch:version"]', hast);
+    const docsearchVersionElement = select(
+      'meta[name="docsearch:version"]',
+      hast
+    )
 
     version = docsearchVersionElement
       ? workerData.loadedVersions[docsearchVersionElement.properties.content]
-      : null;
+      : null
   }
-
 
   yield {
     title: pageTitle,
@@ -70,11 +69,11 @@ function* scanDocuments({ path, url }) {
     // If there is no sections then push the complete content under page title
     content: sectionHeaders.length === 0 ? getContent(markdown) : '',
     keywords,
-    version,
+    version
   }
 
   for (const sectionDesc of sectionHeaders) {
-    const { title, content, ref, tagName } = sectionDesc;
+    const { title, content, ref, tagName } = sectionDesc
     yield {
       title,
       type: 1,
@@ -88,42 +87,61 @@ function* scanDocuments({ path, url }) {
 }
 
 function getContent(element) {
-  return toText(element).replace(/\s\s+/g, ' ').replace(/(\r\n|\n|\r)/gm, ' ').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+  return toText(element)
+    .replace(/\s\s+/g, ' ')
+    .replace(/(\r\n|\n|\r)/gm, ' ')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
 }
 
-function getSectionHeaders(element, result = []) {
-  let currentSection = null
-  let contentsAcc = ''
-  const emitCurrent = () => {
-    const ref = select('.anchor', currentSection)
-    result.push({
-      title: toText(currentSection).replace(/^#+/, '').replace(/#$/, ''),
+function getSectionHeaders(element) {
+  const isHeadingNodeTest = ({ tagName }) => ['h2', 'h3'].includes(tagName)
+  const shouldIndexChildrenTest = ({ properties }) =>
+    properties && properties.dataSearchChildren
+
+  let headingNodes = []
+
+  const trackHeadingNode = (node) => {
+    const ref = select('.anchor', node)
+    headingNodes.push({
+      title: toText(node).replace(/^#+/, '').replace(/#$/, ''),
       ref: ref ? ref.properties.id : '#',
-      tagName: currentSection.tagName || '#',
-      content: contentsAcc,
+      tagName: node.tagName || '#',
+      node: node
     })
-    contentsAcc = ''
-    currentSection = null
   }
 
-  for (const node of element.children) {
-    if (is(node, sectionHeaderTest)) {
-      if (currentSection) {
-        emitCurrent()
+  function traverseNodeAndIndex(
+    element,
+    isIndexingChildren = false,
+    parentHeadingNode = null
+  ) {
+    let currentHeadingNode = parentHeadingNode
+
+    for (const node of element.children) {
+      if (is(node, isHeadingNodeTest)) {
+        trackHeadingNode(node)
+        currentHeadingNode = node
+      } else if (is(node, shouldIndexChildrenTest)) {
+        traverseNodeAndIndex(node, true, currentHeadingNode)
+      } else if (isIndexingChildren && node.children && node.tagName !== 'p') {
+        traverseNodeAndIndex(node, true, currentHeadingNode)
+      } else if (currentHeadingNode) {
+        currentHeadingNode['_indexed-content'] = getContent(node) + ' '
       }
-      currentSection = node
-    } else if (is(node, customSectionHeaderTest)) {
-      getSectionHeaders(node, result)
     }
-    else if (currentSection) {
-      contentsAcc += getContent(node) + ' '
-    }
-  }
-  if (currentSection) {
-    emitCurrent()
   }
 
-  return result
+  traverseNodeAndIndex(element)
+
+  return headingNodes.map(({ node, ...rest }) => {
+    return {
+      ...rest,
+      content: node['_indexed-content']
+    }
+  })
 }
 
 function processFile(file) {
