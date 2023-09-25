@@ -71,7 +71,7 @@ const Search = props => {
         import("./algolia.css")
       ]).then(([searchDocFile, searchIndex, { default: DocSearch }]) => {
         const { searchDocs, options } = searchDocFile;
-        if (searchDocs.length === 0) {
+        if (!searchDocs || searchDocs.length === 0) {
           return;
         }
         initAlgolia(searchDocs, searchIndex, DocSearch, options);
