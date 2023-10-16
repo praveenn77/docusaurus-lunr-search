@@ -29,6 +29,8 @@ const Search = props => {
         // Alternatively, we can use new URL(suggestion.url) but its not supported in IE
         const a = document.createElement("a");
         a.href = url;
+        _input.setVal(''); // clear value
+        _event.target.blur(); // remove focus
 
         // Get the highlight word from the suggestion.
         let wordToHighlight = '';
@@ -113,7 +115,7 @@ const Search = props => {
       <input
         id="search_input_react"
         type="search"
-        placeholder={indexReady ? 'Search' : 'Loading...'}
+        placeholder={indexReady ? 'Search Ctrl+K' : 'Loading...'}
         aria-label="Search"
         className={clsx(
           "navbar__search-input",

@@ -5,16 +5,6 @@ import templates from "./templates";
 import utils from "./utils";
 import $ from "autocomplete.js/zepto";
 
-/**
- * Adds an autocomplete dropdown to an input field
- * @function DocSearch
- * @param  {Object} options.searchDocs Search Documents
- * @param  {Object} options.searchIndex Lune searchIndexes
- * @param  {string} options.inputSelector  CSS selector that targets the input
- * value.
- * @param  {Object} [options.autocompleteOptions] Options to pass to the underlying autocomplete instance
- * @return {Object}
- */
 class DocSearch {
     constructor({
         searchDocs,
@@ -32,7 +22,7 @@ class DocSearch {
         queryHook = false,
         handleSelected = false,
         enhancedSearchInput = false,
-        layout = "collumns"
+        layout = "column"
     }) {
         this.input = DocSearch.getInputFromSelector(inputSelector);
         this.queryDataCallback = queryDataCallback || null;
@@ -95,6 +85,17 @@ class DocSearch {
         if (enhancedSearchInput) {
             DocSearch.bindSearchBoxEvent();
         }
+
+
+        // Ctrl + K should focus the search bar, emulating the Algolia search UI
+        document.addEventListener('keydown',  (e) => {
+            if (e.ctrlKey && e.key == 'k') {
+                this.input.focus();
+
+                // By default, using Ctrl + K in Chrome will open the location bar, so disable this
+                e.preventDefault();
+            }
+        });
     }
 
     static injectSearchBox(input) {
