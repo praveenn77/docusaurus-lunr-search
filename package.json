@@ -60,9 +60,9 @@
     "mocha": "^8.0.1"
   },
   "peerDependencies": {
-    "@docusaurus/core": "^2.0.0-alpha.60 || ^2.0.0",
-    "react": "^16.8.4 || ^17",
-    "react-dom": "^16.8.4 || ^17"
+    "@docusaurus/core": "^2.0.0-alpha.60 || ^2.0.0 || ^3.0.0",
+    "react": "^16.8.4 || ^17 || ^18",
+    "react-dom": "^16.8.4 || ^17 || ^18"
   },
   "engines": {
     "node": ">= 8.10.0"
