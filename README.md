@@ -20,9 +20,9 @@ For older version of node use `docusaurus-lunr-search` version `2.1.0`
 (`npm i docusaurus-lunr-search@2.1.0`)
 
 ## How to Use ?
-1. Install this package
+1. Install this package and [lunr](https://www.npmjs.com/package/lunr)
 ```
-npm i docusaurus-lunr-search  --save
+npm i docusaurus-lunr-search lunr --save
 ```
 2. Then run `npm install` to update, build, and link the packages
 ```
