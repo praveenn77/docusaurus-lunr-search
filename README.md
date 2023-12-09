@@ -94,7 +94,14 @@ indirect children (E.g. 'grandchildren' nodes).
 
 Check this [issue #115](https://github.com/praveenn77/docusaurus-lunr-search/issues/115) for more details.
 
+## Upgrading from docusaurus V2 to V3
+Update the `docusaurus-lunr-search` version to `3.3.0` or higher
 
+Remove `src/theme/SearchBar` folder if you swizzled it before, if the folder does not exist then ignore this step.
+
+Do `npm install` and `npm run build` again
+
+## Credits
 
 Thanks to [`algolia/docsearch.js`](https://github.com/algolia/docsearch), I modified it to create this search component 
 
@@ -102,10 +109,3 @@ And thanks [cmfcmf](https://github.com/cmfcmf), I used the code from his library
 
 ## Changelog
 Checkout the [releases](https://github.com/lelouch77/docusaurus-lunr-search/releases) page for changelog. 
-
-## Upgrading from docusaurus V2 to V3
-Update the `docusaurus-lunr-search` version to `3.3.0` or higher
-
-Remove `src/theme/SearchBar` folder if you swizzled it before, if the folder does not exist then ignore this step.
-
-Do `npm install` and `npm run build` again
