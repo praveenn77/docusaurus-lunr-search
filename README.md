@@ -105,5 +105,7 @@ Checkout the [releases](https://github.com/lelouch77/docusaurus-lunr-search/rele
 
 ## Upgrading from docusaurus V2 to V3
 Update the `docusaurus-lunr-search` version to `3.3.0` or higher
+
 Remove `src/theme/SearchBar` folder if you swizzled it before, if the folder does not exist then ignore this step.
+
 Do `npm install` and `npm run build` again
