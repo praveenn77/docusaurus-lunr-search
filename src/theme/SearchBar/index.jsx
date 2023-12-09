@@ -96,8 +96,11 @@ const Search = props => {
     [props.isSearchBarExpanded]
   );
 
+  let placeholder
   if (isBrowser) {
     loadAlgolia();
+    placeholder = window.navigator.platform.startsWith("Mac") ?
+      'Search ⌘+K' : 'Search Ctrl+K'
   }
 
   return (
@@ -115,7 +118,7 @@ const Search = props => {
       <input
         id="search_input_react"
         type="search"
-        placeholder={indexReady ? 'Search Ctrl+K' : 'Loading...'}
+        placeholder={indexReady ? placeholder : 'Loading...'}
         aria-label="Search"
         className={clsx(
           "navbar__search-input",
