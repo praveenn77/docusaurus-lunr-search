@@ -23,7 +23,7 @@ Offline Search for Docusaurus V2
 ```
 yarn add docusaurus-lunr-search
 ```
-In case you are using npm
+or
 ```
 npm i docusaurus-lunr-search  --save
 ```
