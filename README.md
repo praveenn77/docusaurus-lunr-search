@@ -15,19 +15,25 @@ Offline Search for Docusaurus V2
 
 
 ## Prerequisites
-`worker_thread` is needed, suggested node version > 12.X
-For older version of node use `docusaurus-lunr-search` version `2.1.0`
-(`npm i docusaurus-lunr-search@2.1.0`)
+- Docusaurus V2 or V3
+- Node.js >= 12.X
 
 ## How to Use ?
 1. Install this package
 ```
+yarn add docusaurus-lunr-search
+```
+In case you are using npm
+```
 npm i docusaurus-lunr-search  --save
 ```
-2. Then run `npm install` to update, build, and link the packages
+If npm install fails to install with error `unable to resolve dependency tree`, run `npm i --legacy-peer-deps`
+
+2. Some time npm fails to install `lunr` package, in that case install `lunr` package manually
 ```
-npm install
+npm i lunr --save
 ```
+
 3. Add the docusaurus-lunr-search plugin to your `docusaurus.config.js`
 ```
 module.exports = {
@@ -38,16 +44,20 @@ module.exports = {
 
 4. Then build your Docusaurus project
 ```
-npm run build
-```
-5. Serve your application
-```
-npm run serve 
+yarn build
 ```
 or
-
 ```
-npx http-server ./build
+npm run build
+```
+
+5. Serve your application
+```
+yarn serve
+```
+or
+```
+npm run serve 
 ```
 
 Note: Docusaurus search information can only be generated from a production build. Local development is currently not supported.
@@ -95,11 +105,13 @@ indirect children (E.g. 'grandchildren' nodes).
 Check this [issue #115](https://github.com/praveenn77/docusaurus-lunr-search/issues/115) for more details.
 
 ## Upgrading from docusaurus V2 to V3
-Update the `docusaurus-lunr-search` version to `3.3.0` or higher
+Update the `docusaurus-lunr-search` version to `3.3.0` or higher in `package.json` file
 
 Remove `src/theme/SearchBar` folder if you swizzled it before, if the folder does not exist then ignore this step.
 
-Do `npm install` and `npm run build` again
+Do `yarn install` or `npm install` 
+
+If npm install fails to install with error `unable to resolve dependency tree`, run `npm i --legacy-peer-deps`
 
 ## Credits
 
