@@ -86,10 +86,9 @@ class DocSearch {
             DocSearch.bindSearchBoxEvent();
         }
 
-
-        // Ctrl + K should focus the search bar, emulating the Algolia search UI
+        // Ctrl/Cmd + K should focus the search bar, emulating the Algolia search UI
         document.addEventListener('keydown',  (e) => {
-            if (e.ctrlKey && e.key == 'k') {
+            if ((e.ctrlKey || e.metaKey) && e.key == 'k') {
                 this.input.focus();
 
                 // By default, using Ctrl + K in Chrome will open the location bar, so disable this
