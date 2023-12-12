@@ -85,7 +85,8 @@ Supports all the language listed here https://github.com/MihaiValentin/lunr-lang
 | `excludeTags`       | `Array`   | `[]`     | Exclude certain tags from the search      
 | `highlightResult`   | `Boolean` | `false`  | Enable it to highlight the searched word in the result page. Used `mark.js` for highlighting. <br /> You can customize the highlight color using css <br /> ``` mark  { background-color: red !important; color: green !important }```                                                                                |
 | `disableVersioning` | `Boolean` | `false`  | Docs versions are displayed by default. If you want to hide it, set this plugin option to `true`                          |
-| `assetUrl`     | `string`   | `\`     | Url from which the generated search doc files to be loaded, check [issue #122](https://github.com/praveenn77/docusaurus-lunr-search/issues/122)
+| `assetUrl`     | `string`   | `\`     | Url from which the generated search doc files to be loaded, check [issue #122](https://github.com/praveenn77/docusaurus-lunr-search/issues/122) |
+| `maxHits`           | `string`  | `5`      | Maximum number of hits shown |
 
 ## Indexing non-direct children headings of `.markdown`
 By default, this library will only search for headings that are

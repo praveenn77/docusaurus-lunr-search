@@ -51,7 +51,8 @@ const Search = props => {
         history.push(url, {
           highlightState: { wordToHighlight },
         });
-      }
+      },
+      maxHits: options.maxHits
     });
   };
 
