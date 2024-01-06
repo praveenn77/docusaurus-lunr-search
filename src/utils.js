@@ -69,7 +69,8 @@ function getFilePaths(routesPaths, outDir, baseUrl, options = {}) {
             return;
         }
 
-        const candidatePaths = [route, route.substring(baseUrl.length)].flatMap(route => {
+        const relativePath = route.replace(baseUrl, '')
+        const candidatePaths = [route, relativePath].flatMap(route => {
             return [
                 path.join(outDir, `${route}.html`),
                 path.join(outDir, route, "index.html")
@@ -77,26 +78,27 @@ function getFilePaths(routesPaths, outDir, baseUrl, options = {}) {
         });
 
         const filePath = candidatePaths.find(fs.existsSync);
-        if(!fs.existsSync(filePath)) {
+        if(filePath && !fs.existsSync(filePath)) {
             // if this error occurs, likely docusaurus changed some file generation aspects
             // and we need to update the candidates above
             console.warn(`docusaurus-lunr-search: could not resolve file for route '${route}', it will be missing in the search index`);
         }
 
         // if we already added this file, skip it
-        if(addedFiles.has(filePath)) return
+        if(filePath && addedFiles.has(filePath)) return
 
         // if we have include routes, skip if this route doesn't match any of them
-        if(includeRoutes.length > 0 && !(includeRoutes.some((includePattern) => minimatch(route, includePattern)))) {
+        if(includeRoutes.length > 0 && !(includeRoutes.some((includePattern) => minimatch(route, includePattern) || minimatch(relativePath, includePattern)))) {
             meta.excludedCount++
             return
         }
 
         // if we have exclude routes, skip if this route matches any of them
-        if (excludeRoutes.some((excludePattern) => minimatch(route, excludePattern))) {
+        if (excludeRoutes.some((excludePattern) => minimatch(route, excludePattern) || minimatch(relativePath, excludePattern))) {
             meta.excludedCount++
             return
         }
+
         files.push({
             path: filePath,
             url: route,
