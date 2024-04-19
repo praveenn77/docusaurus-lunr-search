@@ -9,6 +9,16 @@ const toText = require('hast-util-to-text')
 const is = require('unist-util-is')
 const toVfile = require('to-vfile')
 
+function findArticleWithMarkdown(articles) {
+  for (let i = 0; i < articles.length; i++) {
+    markdown = select('.markdown', articles[i])
+    if (markdown) {
+      return [markdown, articles[i]];
+    }
+  }
+  return [null, null];
+}
+
 // Build search data for a html
 function* scanDocuments({ path, url }) {
   let vfile
@@ -24,11 +34,12 @@ function* scanDocuments({ path, url }) {
 
   const hast = unified().use(parse, { emitParseErrors: false }).parse(vfile)
 
-  const article = select('article', hast)
-  if (!article) {
+  const articles = selectAll('article', hast)
+  if (!articles) {
     return
   }
-  const markdown = select('.markdown', article)
+
+  const [markdown, article] = findArticleWithMarkdown(articles)
   if (!markdown) {
     return
   }
