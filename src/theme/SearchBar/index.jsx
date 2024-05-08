@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState } from "react";
+import React, { useRef, useCallback, useState, useEffect } from "react";
 import clsx from "clsx";
 import { useHistory } from "@docusaurus/router";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
@@ -103,6 +103,13 @@ const Search = props => {
     placeholder = window.navigator.platform.startsWith("Mac") ?
       'Search ⌘+K' : 'Search Ctrl+K'
   }
+
+  // auto focus search bar on page load
+  useEffect(() => {
+    if (props.autoFocus && indexReady) {
+      searchBarRef.current.focus();
+    }
+  }, [indexReady]);
 
   return (
     <div className="navbar__search" key="search-box">
