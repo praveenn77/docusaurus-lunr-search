@@ -10,7 +10,7 @@ const utils = require('./utils')
 
 module.exports = function (context, options) {
   options = options || {};
-  let languages
+  let languages = undefined;
 
   const guid = String(Date.now())
   const fileNames = {
@@ -24,9 +24,13 @@ module.exports = function (context, options) {
       return path.resolve(__dirname, './theme');
     },
     configureWebpack(config) {
-      // Multilingual issue fix
-      const generatedFilesDir = config.resolve.alias['@generated']
-      languages = utils.generateLunrClientJS(generatedFilesDir, options.languages);
+      // Docusaurus invokes configureWebpack() twice, for client and server; however generateLunrClientJS()
+      // is a global configuration.
+      if (languages === undefined) {
+        // Multilingual issue fix
+        const generatedFilesDir = config.resolve.alias['@generated']
+        languages = utils.generateLunrClientJS(generatedFilesDir, options.languages);
+      }
       return {};
     },
     async contentLoaded({ actions }) {
