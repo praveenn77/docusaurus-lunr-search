@@ -87,6 +87,20 @@ Supports all the language listed here https://github.com/MihaiValentin/lunr-lang
 | `disableVersioning` | `Boolean` | `false`  | Docs versions are displayed by default. If you want to hide it, set this plugin option to `true`                          |
 | `assetUrl`     | `string`   | `\`     | Url from which the generated search doc files to be loaded, check [issue #122](https://github.com/praveenn77/docusaurus-lunr-search/issues/122) |
 | `maxHits`           | `string`  | `5`      | Maximum number of hits shown |
+| `fields`            | `object`  | `{}`      | Lunr field definitions, allows "boosting" priority for different sources of keywords (e.g. title, content, keywords) |
+
+### Options to configure Lunr fields
+The `fields` config property is passed into Lunr directly as [field attributes](https://lunrjs.com/docs/lunr.Builder.html#field), and can be used to configure the relative priority of different field types (e.g. title, content, keywords). 
+
+docusaurus-lunr-search sets the default value for fields to:
+
+```javascript
+{ 
+  title: { boost: 200 },
+  content: { boost: 2 },
+  keywords: { boost: 100 }
+}
+```
 
 ## Indexing non-direct children headings of `.markdown`
 By default, this library will only search for headings that are
