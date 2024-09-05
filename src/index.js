@@ -46,15 +46,23 @@ module.exports = function (context, options) {
       if (meta.excludedCount) {
         console.log(`docusaurus-lunr-search:: ${meta.excludedCount} documents were excluded from the search by excludeRoutes config`)
       }
+      
+      // Expose Lunr's fields configuration through docusaurus options.
+      // Fields are used to configure how Lunr treats different sources of search terms.
+      // This allows a user to boost the importance of certain fields over others.
+      const fields = {
+        title: { boost: 200, ...options.fields?.title },
+        content: { boost: 2, ...options.fields?.content },
+        keywords: { boost: 100, ...options.fields?.keywords },
+      };
+
       const searchDocuments = []
       const lunrBuilder = lunr(function (builder) {
         if (languages) {
           this.use(languages)
         }
         this.ref('id')
-        this.field('title', { boost: 200 })
-        this.field('content', { boost: 2 })
-        this.field('keywords', { boost: 100 })
+        Object.entries(fields).forEach(([key, value]) => this.field(key, value));
         this.metadataWhitelist = ['position']
 
         const { build } = builder
