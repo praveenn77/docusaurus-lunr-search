@@ -1,6 +1,6 @@
 {
   "name": "docusaurus-lunr-search",
-  "version": "3.5.0",
+  "version": "3.6.0",
   "description": "Offline search component for Docusaurus V3",
   "main": "src/index.js",
   "publishConfig": {
@@ -30,6 +30,10 @@
     {
       "name": "Andrei Rublev",
       "url": "https://github.com/anru"
+    },
+    {
+      "name": "Ris Adams",
+      "url": "https://github.com/risadams"
     }
   ],
   "keywords": [
@@ -40,28 +44,28 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "autocomplete.js": "^0.37.0",
-    "clsx": "^1.2.1",
-    "gauge": "^3.0.0",
-    "hast-util-select": "^4.0.0",
-    "hast-util-to-text": "^2.0.0",
+    "autocomplete.js": "^0.37.1",
+    "clsx": "^2.1.1",
+    "gauge": "^3.0.2",
+    "hast-util-select": "^4.0.2",
+    "hast-util-to-text": "^2.0.1",
     "hogan.js": "^3.0.2",
-    "lunr": "^2.3.8",
+    "lunr": "^2.3.9",
     "lunr-languages": "^1.4.0",
     "mark.js": "^8.11.1",
-    "minimatch": "^3.0.4",
+    "minimatch": "^3.1.2",
     "rehype-parse": "^7.0.1",
     "to-vfile": "^6.1.0",
-    "unified": "^9.0.0",
-    "unist-util-is": "^4.0.2"
+    "unified": "^9.2.2",
+    "unist-util-is": "^4.1.0"
   },
   "devDependencies": {
-    "mocha": "^8.0.1"
+    "mocha": "^8.4.0"
   },
   "peerDependencies": {
     "@docusaurus/core": "^2.0.0-alpha.60 || ^2.0.0 || ^3.0.0",
-    "react": "^16.8.4 || ^17 || ^18",
-    "react-dom": "^16.8.4 || ^17 || ^18"
+    "react": "^16.8.4 || ^17 || ^18 || ^19",
+    "react-dom": "^16.8.4 || ^17 || ^18 || ^19"
   },
   "engines": {
     "node": ">= 8.10.0"
